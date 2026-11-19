@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alejandro Ingeniería · Redes y telecomunicaciones en corto</title>
+<meta name="description" content="Canal de Alejandro Ingeniería: redes, telecomunicaciones y sistemas explicados en videos cortos. Modelo OSI, VLSM, Cisco, homelab con Proxmox y más.">
+<meta property="og:title" content="Alejandro Ingeniería">
+<meta property="og:description" content="Redes, telecomunicaciones y sistemas explicados en corto.">
+<meta property="og:url" content="https://alejandroingeneria.tech/">
+<meta name="theme-color" content="#0b1020">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b1020;--panel:#121a33;--line:#223056;--txt:#eef2ff;--mut:#9aa3c7;--gold:#f5c451;--blue:#4da3ff}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:Sora,system-ui,sans-serif;overflow-x:hidden}
+a{color:inherit}
+nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px 22px;background:rgba(11,16,32,.75);backdrop-filter:blur(10px);border-bottom:1px solid #ffffff10}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;text-decoration:none}
+.brand svg{width:34px;height:34px}
+nav .links a{margin-left:18px;color:var(--mut);text-decoration:none;font-size:14px}
+nav .links a:hover{color:var(--gold)}
+@media(max-width:640px){nav .links{display:none}}
+header{position:relative;min-height:92vh;display:flex;align-items:center;padding:110px 22px 60px;overflow:hidden}
+#eye{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+.hero{position:relative;max-width:1000px;margin:0 auto;width:100%}
+.tag{display:inline-block;font:700 12px 'JetBrains Mono',monospace;letter-spacing:.2em;color:var(--gold);border:1px solid #f5c45155;padding:6px 10px;border-radius:99px}
+h1{font-size:clamp(38px,7vw,76px);line-height:1.02;font-weight:800;letter-spacing:-.03em;margin:18px 0}
+h1 span{background:linear-gradient(90deg,var(--gold),#ffe7a3,var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{max-width:600px;color:var(--mut);font-size:clamp(16px,2vw,19px);line-height:1.55}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 20px;border-radius:12px;font-weight:700;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.y{background:var(--gold);color:#1a1300;box-shadow:0 12px 30px -12px var(--gold)}
+.btn.o{border:1px solid var(--line);background:#121a33aa}
+section{max-width:1000px;margin:0 auto;padding:70px 22px}
+h2{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.02em}
+.sub{color:var(--mut);margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:28px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;transition:transform .2s,border-color .2s;opacity:0;transform:translateY(20px)}
+.card.in{opacity:1;transform:none;transition:opacity .6s,transform .6s,border-color .2s}
+.card:hover{border-color:var(--gold)}
+.card .n{font:700 12px 'JetBrains Mono',monospace;color:var(--gold)}
+.card h3{margin:10px 0 6px;font-size:18px}
+.card p{color:var(--mut);font-size:14px;line-height:1.5}
+.social{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:24px}
+.social a{display:flex;align-items:center;gap:12px;padding:16px;border-radius:14px;background:var(--panel);border:1px solid var(--line);text-decoration:none;transition:border-color .2s,transform .15s}
+.social a:hover{border-color:var(--blue);transform:translateY(-2px)}
+.social b{display:block}
+.social small{color:var(--mut)}
+.who{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;background:linear-gradient(135deg,#121a33,#18224a);border:1px solid var(--line);border-radius:22px;padding:28px}
+.who .av{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),var(--blue));color:#0b1020;font-weight:800;font-size:28px}
+.who p{color:var(--mut);line-height:1.6;margin-top:6px}
+@media(max-width:600px){.who{grid-template-columns:1fr;text-align:center}.who .av{margin:0 auto}}
+footer{text-align:center;color:var(--mut);font-size:13px;padding:40px 22px 60px;border-top:1px solid #ffffff10}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="#">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M2 20 C 10 4, 30 4, 38 20 C 30 36, 10 36, 2 20 Z" fill="none" stroke="#f5c451" stroke-width="2.5"/><path d="M2 20 C 10 30, 30 10, 38 20" fill="none" stroke="#4da3ff" stroke-width="2"/><path d="M2 20 C 10 10, 30 30, 38 20" fill="none" stroke="#4da3ff" stroke-width="2"/></svg>
+    Alejandro Ingeniería
+  </a>
+  <div class="links"><a href="#series">Series</a><a href="#redes">Redes sociales</a><a href="#quien">Quién soy</a></div>
+</nav>
+
+<header>
+  <canvas id="eye"></canvas>
+  <div class="hero">
+    <span class="tag">REDES · TELECOM · SISTEMAS</span>
+    <h1>Lo que nadie te explica<br><span>de las redes, en corto.</span></h1>
+    <p class="lead">Videos de un minuto sobre redes, telecomunicaciones y sistemas: modelo OSI, subnetting, Cisco, servidores en casa con Proxmox y proyectos reales de ingeniería.</p>
+    <div class="cta">
+      <a class="btn y" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">▶ Suscribirme en YouTube</a>
+      <a class="btn o" href="#series">Ver las series</a>
+    </div>
+  </div>
+</header>
+
+<section id="series">
+  <h2>Series</h2>
+  <p class="sub">Temas concretos que puedes guardar y repasar.</p>
+  <div class="grid">
+    <div class="card"><div class="n">01 · 8 VIDEOS</div><h3>El modelo OSI, capa por capa</h3><p>Un video general y uno por cada capa, con ejemplos de lo que pasa en una red de verdad.</p></div>
+    <div class="card"><div class="n">02</div><h3>Subnetting y VLSM</h3><p>Cómo repartir direcciones IP sin desperdiciar, explicado paso a paso.</p></div>
+    <div class="card"><div class="n">03</div><h3>Cisco y telemática</h3><p>VLAN, enrutamiento, telefonía IP con CME y laboratorios en Packet Tracer.</p></div>
+    <div class="card"><div class="n">04</div><h3>Homelab con PCs viejos</h3><p>Servidores en casa con Proxmox, pfSense y Ubuntu Server, usando hardware reutilizado.</p></div>
+    <div class="card"><div class="n">05</div><h3>Electrónica y telemetría</h3><p>Proyectos propios: la telemetría del vehículo eléctrico SIIMA Vector, ESP32 y más.</p></div>
+    <div class="card"><div class="n">06</div><h3>Java para redes</h3><p>Programas pequeños que diagnostican y automatizan tareas de red.</p></div>
+  </div>
+</section>
+
+<section id="redes">
+  <h2>Sígueme donde estés</h2>
+  <p class="sub">Un video nuevo todos los días.</p>
+  <div class="social">
+    <a href="https://www.youtube.com/@alejandroingenieria" target="_blank" rel="noopener"><span style="font-size:24px">▶️</span><span><b>YouTube</b><small>@alejandroingenieria</small></span></a>
+    <a href="https://www.instagram.com/alejandroingenieria/" target="_blank" rel="noopener"><span style="font-size:24px">📸</span><span><b>Instagram</b><small>@alejandroingenieria</small></span></a>
+    <a href="https://www.tiktok.com/@alejandroingenieria" target="_blank" rel="noopener"><span style="font-size:24px">🎵</span><span><b>TikTok</b><small>@alejandroingenieria</small></span></a>
+    <a href="https://www.linkedin.com/in/brayan-santamaria-developer/" target="_blank" rel="noopener"><span style="font-size:24px">💼</span><span><b>LinkedIn</b><small>Brayan Santamaría</small></span></a>
+  </div>
+</section>
+
+<section id="quien">
+  <div class="who">
+    <div class="av">A</div>
+    <div>
+      <h2 style="font-size:24px">Quién está detrás</h2>
+      <p>Soy Brayan Alejandro Santamaría, estudiante de Ingeniería de Telecomunicaciones en Bucaramanga (Colombia). Trabajé en operación de red fija en Claro y fui ponente en CISIET 2026 en Chile. Aquí comparto lo que aprendo, como me hubiera gustado que me lo explicaran.</p>
+      <div class="cta" style="margin-top:16px"><a class="btn o" href="https://brayansantamaria.dev/" target="_blank" rel="noopener">Mi portafolio profesional →</a><a class="btn o" href="https://www.linkedin.com/in/brayan-santamaria-developer/" target="_blank" rel="noopener">LinkedIn →</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>© <span id="y"></span> Alejandro Ingeniería · Contacto: brayan.santamaria.2002@gmail.com</footer>
+
+<script>
+document.getElementById("y").textContent=new Date().getFullYear();
+/* Diagrama de ojo animado: trazas de una señal binaria superpuestas */
+const c=document.getElementById("eye"),x=c.getContext("2d");let W,H,t=0;
+function rs(){W=c.width=c.offsetWidth*devicePixelRatio;H=c.height=c.offsetHeight*devicePixelRatio}
+rs();addEventListener("resize",rs);
+const bits=Array.from({length:400},()=>Math.random()<.5?1:-1);
+function draw(){
+  x.fillStyle="rgba(11,16,32,.18)";x.fillRect(0,0,W,H);
+  const UI=W/2.2,cy=H*.55,A=H*.18,off=(t*2)%UI;
+  for(let k=0;k<6;k++){
+    const s=(Math.floor(t/18)+k*7)%390;
+    x.beginPath();
+    for(let px=-UI;px<=W+UI;px+=6){
+      const pos=(px+off)/UI,i=Math.floor(pos),f=pos-i;
+      const a=bits[(s+i+400)%400],b=bits[(s+i+1+400)%400];
+      const sm=f*f*(3-2*f),y=cy-A*(a+(b-a)*sm)+Math.sin((px+k*40)*.01)*3;
+      px===-UI?x.moveTo(px,y):x.lineTo(px,y);
+    }
+    x.strokeStyle=k%2?"rgba(77,163,255,.35)":"rgba(245,196,81,.35)";
+    x.lineWidth=1.6*devicePixelRatio;x.stroke();
+  }
+  t++;requestAnimationFrame(draw);
+}
+draw();
+const io=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add("in"),i*80);io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll(".card").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
