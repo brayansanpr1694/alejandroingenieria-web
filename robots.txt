@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://alejandroingeneria.tech/sitemap.xml
+Sitemap: https://alejandroingenieria.me/sitemap.xml
