@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>¿Qué pasa cuando escribes un dominio? · Alejandro Ingeniería</title>
 <meta name="description" content="Acompaña una consulta DNS desde tu equipo hasta el servidor que conoce la respuesta: resolvedor, raíz, autoritativo y registros.">
-<link rel="canonical" href="https://alejandroingeneria.tech/blog/como-funciona-dns.html">
+<link rel="canonical" href="https://alejandroingenieria.me/blog/como-funciona-dns.html">
 <meta name="theme-color" content="#002451">
 <meta name="author" content="Brayan Alejandro Santamaría">
 <meta property="og:type" content="article">
@@ -13,8 +13,8 @@
 <meta property="og:locale" content="es_CO">
 <meta property="og:title" content="¿Qué pasa cuando escribes un dominio? · Alejandro Ingeniería">
 <meta property="og:description" content="Acompaña una consulta DNS desde tu equipo hasta el servidor que conoce la respuesta: resolvedor, raíz, autoritativo y registros.">
-<meta property="og:url" content="https://alejandroingeneria.tech/blog/como-funciona-dns.html">
-<meta property="og:image" content="https://alejandroingeneria.tech/assets/og.png">
+<meta property="og:url" content="https://alejandroingenieria.me/blog/como-funciona-dns.html">
+<meta property="og:image" content="https://alejandroingenieria.me/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
@@ -23,7 +23,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/style.css">
 <script>document.documentElement.classList.add("js")</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "¿Qué pasa cuando escribes un dominio?", "description": "Acompaña una consulta DNS desde tu equipo hasta el servidor que conoce la respuesta: resolvedor, raíz, autoritativo y registros.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingeneria.tech/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingeneria.tech/"}, "mainEntityOfPage": "https://alejandroingeneria.tech/blog/como-funciona-dns.html"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "¿Qué pasa cuando escribes un dominio?", "description": "Acompaña una consulta DNS desde tu equipo hasta el servidor que conoce la respuesta: resolvedor, raíz, autoritativo y registros.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingenieria.me/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingenieria.me/"}, "mainEntityOfPage": "https://alejandroingenieria.me/blog/como-funciona-dns.html"}</script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -50,7 +50,7 @@
   <div class="post-meta"><span class="chip">DNS</span><span>Paso 4 de la <a href="../ruta/" style="color:inherit">ruta de estudio</a></span><span>· 4 min de lectura</span></div>
 </div>
 <article class="post">
-<p>Escribes <code>alejandroingeneria.tech</code>, presionas Enter y en menos de un segundo aparece la página. Pero tu equipo no sabe conectarse a un nombre: necesita una <strong>dirección IP</strong>. El encargado de traducir uno en otro es el <strong>DNS</strong> (<em>Domain Name System</em>).</p>
+<p>Escribes <code>alejandroingenieria.me</code>, presionas Enter y en menos de un segundo aparece la página. Pero tu equipo no sabe conectarse a un nombre: necesita una <strong>dirección IP</strong>. El encargado de traducir uno en otro es el <strong>DNS</strong> (<em>Domain Name System</em>).</p>
 
 <h2>Del nombre a la dirección</h2>
 <p>Lo primero que hace tu equipo es mirar si ya tiene la respuesta guardada en <strong>caché</strong> (la del navegador o la del sistema operativo). Si no la tiene, le pregunta a un <strong>resolvedor DNS</strong>: normalmente el de tu router, el de tu operador o uno público como <code>8.8.8.8</code> o <code>1.1.1.1</code>. El resolvedor puede responder con lo que tenga en su propia caché o salir a buscarlo.</p>
@@ -77,9 +77,9 @@
 <p>Además, cada respuesta trae un <strong>TTL</strong>: cuántos segundos puede guardarse en caché antes de volver a preguntar. Por eso, cuando cambias un registro, a veces tarda en “verse”.</p>
 
 <h2>Compruébalo en tu equipo</h2>
-<pre><code>nslookup -type=A alejandroingeneria.tech
-nslookup -type=AAAA alejandroingeneria.tech
-nslookup -type=MX alejandroingeneria.tech</code></pre>
+<pre><code>nslookup -type=A alejandroingenieria.me
+nslookup -type=AAAA alejandroingenieria.me
+nslookup -type=MX alejandroingenieria.me</code></pre>
 <p>Fíjate en qué servidor respondió y compara las direcciones: un mismo nombre puede tener varias. Si un tipo de registro no aparece, lee el mensaje antes de asumir que el dominio no existe; puede que simplemente no tenga ese registro.</p>
 
 <div class="note"><strong>Para llevarte:</strong> DNS solo resuelve el nombre. Después, el navegador se conecta a la IP obtenida (por TCP al puerto 443 si es HTTPS) para pedir la página.</div>
@@ -103,7 +103,7 @@ nslookup -type=MX alejandroingeneria.tech</code></pre>
       <a href="../blog/">Blog</a>
       <a href="../ruta/">Ruta de estudio</a>
       <a href="../glosario/">Glosario</a>
-      <a href="mailto:contacto@alejandroingeneria.tech">contacto@alejandroingeneria.tech</a>
+      <a href="mailto:contacto@alejandroingenieria.me">contacto@alejandroingenieria.me</a>
     </div>
   </div>
 </footer>
