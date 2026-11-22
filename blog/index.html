@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog de redes · Alejandro Ingeniería</title>
+<meta name="description" content="Guías para entender cómo se conectan los equipos, cómo viajan los datos y qué revisar cuando se corta una conexión.">
+<link rel="canonical" href="https://alejandroingeneria.tech/blog/">
+<meta name="theme-color" content="#002451">
+<meta name="author" content="Brayan Alejandro Santamaría">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Alejandro Ingeniería">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Blog de redes · Alejandro Ingeniería">
+<meta property="og:description" content="Guías para entender cómo se conectan los equipos, cómo viajan los datos y qué revisar cuando se corta una conexión.">
+<meta property="og:url" content="https://alejandroingeneria.tech/blog/">
+<meta property="og:image" content="https://alejandroingeneria.tech/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<nav aria-label="Principal">
+  <div class="nav-in">
+    <a class="brand" href="../" aria-label="Alejandro Ingeniería, inicio"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="9" width="22" height="22" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15 4.5v4.5M20 4.5v4.5M25 4.5v4.5M15 31v4.5M20 31v4.5M25 31v4.5M4.5 15h4.5M4.5 20h4.5M4.5 25h4.5M31 15h4.5M31 20h4.5M31 25h4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15.2 23.6l4.6-4.6 4.6-2.6M19.8 19v8M24.4 23.8V27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="15.2" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="16.4" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/></svg><span class="wm"><b>Alejandro</b><small>Ingeniería &amp; Sistemas</small></span></a>
+    <button class="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <div class="links" id="menu">
+      <a href="../#series">Series</a>
+      <a href="../blog/" aria-current="page">Blog</a>
+      <a href="../ruta/">Ruta</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="../#colaboraciones">Colaboraciones</a>
+      <a href="../#quien">Quién soy</a>
+      <a class="pill" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<div class="page-head wide">
+  <div class="crumbs"><a href="../">Inicio</a> / Blog</div>
+  <h1>Blog de <span class="grad">redes</span></h1>
+  <p class="lead">Guías para entender cómo se conectan los equipos, cómo viajan los datos y qué revisar cuando se corta una conexión. ¿No sabes por dónde empezar? Sigue la <a href="../ruta/" style="color:var(--gold)">ruta de estudio</a>.</p>
+</div>
+<section style="padding-top:6px">
+  <div class="filters" role="toolbar" aria-label="Filtrar por tema"><button class="filter on" data-t="*">Todos</button><button class="filter" data-t="Fundamentos">Fundamentos</button><button class="filter" data-t="Subnetting">Subnetting</button><button class="filter" data-t="DNS">DNS</button><button class="filter" data-t="Enrutamiento">Enrutamiento</button><button class="filter" data-t="Diagnóstico">Diagnóstico</button></div>
+  <p class="count"><span id="n">6</span> artículos</p>
+  <div class="grid" id="posts">
+    <a class="card reveal" href="modelo-osi-explicado.html" data-tema="Fundamentos">
+      <div class="n">7 CAPAS</div>
+      <h3>El modelo OSI explicado con lo que pasa al abrir una página web</h3>
+      <p>Las 7 capas del modelo OSI explicadas siguiendo lo que pasa cuando abres una página: qué hace cada capa, sus PDU, protocolos y equipos.</p>
+      <div class="meta"><span class="chip">Fundamentos</span><span>9 min</span></div>
+    </a>
+    <a class="card reveal" href="direcciones-ip-y-subredes.html" data-tema="Fundamentos">
+      <div class="n">192.168.1.0/24</div>
+      <h3>Direcciones IP y subredes desde cero</h3>
+      <p>Aprende a leer un prefijo como /24 y a reconocer cuándo dos direcciones están en la misma subred.</p>
+      <div class="meta"><span class="chip">Fundamentos</span><span>5 min</span></div>
+    </a>
+    <a class="card reveal" href="vlsm-paso-a-paso.html" data-tema="Subnetting">
+      <div class="n">/25 · /26 · /30</div>
+      <h3>VLSM paso a paso: reparte una /24 sin desperdiciar IPs</h3>
+      <p>Un ejercicio completo de VLSM: cuatro redes de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.</p>
+      <div class="meta"><span class="chip">Subnetting</span><span>8 min</span></div>
+    </a>
+    <a class="card reveal" href="como-funciona-dns.html" data-tema="DNS">
+      <div class="n">DOMINIO → IP</div>
+      <h3>¿Qué pasa cuando escribes un dominio?</h3>
+      <p>Acompaña una consulta DNS desde tu equipo hasta el servidor que conoce la respuesta: resolvedor, raíz, autoritativo y registros.</p>
+      <div class="meta"><span class="chip">DNS</span><span>4 min</span></div>
+    </a>
+    <a class="card reveal" href="como-decide-un-router.html" data-tema="Enrutamiento">
+      <div class="n">DESTINO → RUTA</div>
+      <h3>Cómo decide un router el siguiente salto</h3>
+      <p>Lee una tabla de rutas y descubre qué ocurre cuando varias entradas coinciden con el mismo destino.</p>
+      <div class="meta"><span class="chip">Enrutamiento</span><span>5 min</span></div>
+    </a>
+    <a class="card reveal" href="diagnosticar-conexion.html" data-tema="Diagnóstico">
+      <div class="n">DNS · TCP · HTTPS</div>
+      <h3>Tu equipo tiene Wi-Fi, pero la web no carga</h3>
+      <p>Un recorrido práctico para separar problemas de configuración, resolución DNS y conexión al sitio.</p>
+      <div class="meta"><span class="chip">Diagnóstico</span><span>6 min</span></div>
+    </a>
+  </div>
+  <h2 style="font-size:22px;margin-top:56px">En camino</h2>
+  <div class="grid"><div class="card soon"><span class="chip g">Próximamente · Homelab</span><h3>Proxmox en un portátil viejo: tu primer servidor en casa</h3></div><div class="card soon"><span class="chip g">Próximamente · Cisco</span><h3>VLANs y router-on-a-stick en Packet Tracer</h3></div><div class="card soon"><span class="chip g">Próximamente · Telefonía IP</span><h3>Tu primera central telefónica con Cisco CME</h3></div></div>
+</section>
+</main>
+<script>
+document.querySelectorAll(".filter").forEach(function(b){b.addEventListener("click",function(){
+  var t=b.dataset.t,n=0;document.querySelectorAll(".filter").forEach(function(x){x.classList.toggle("on",x===b)});
+  document.querySelectorAll("#posts .card").forEach(function(c){var ok=t==="*"||c.dataset.tema===t;c.style.display=ok?"":"none";if(ok)n++});
+  document.getElementById("n").textContent=n;
+})});
+</script>
+
+<footer>
+  <div class="foot">
+    <div>© <span data-year>2026</span> Alejandro Ingeniería · Bucaramanga, Colombia</div>
+    <div class="cols">
+      <a href="../blog/">Blog</a>
+      <a href="../ruta/">Ruta de estudio</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="mailto:contacto@alejandroingeneria.tech">contacto@alejandroingeneria.tech</a>
+    </div>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+</body>
+</html>

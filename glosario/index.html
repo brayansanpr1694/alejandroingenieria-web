@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glosario de redes · Alejandro Ingeniería</title>
+<meta name="description" content="Definiciones cortas de términos de redes como DHCP, DNS, VLAN, VLSM, puerta de enlace y TTL, con la guía donde se explican en contexto.">
+<link rel="canonical" href="https://alejandroingeneria.tech/glosario/">
+<meta name="theme-color" content="#002451">
+<meta name="author" content="Brayan Alejandro Santamaría">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Alejandro Ingeniería">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Glosario de redes · Alejandro Ingeniería">
+<meta property="og:description" content="Definiciones cortas de términos de redes como DHCP, DNS, VLAN, VLSM, puerta de enlace y TTL, con la guía donde se explican en contexto.">
+<meta property="og:url" content="https://alejandroingeneria.tech/glosario/">
+<meta property="og:image" content="https://alejandroingeneria.tech/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<nav aria-label="Principal">
+  <div class="nav-in">
+    <a class="brand" href="../" aria-label="Alejandro Ingeniería, inicio"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="9" width="22" height="22" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15 4.5v4.5M20 4.5v4.5M25 4.5v4.5M15 31v4.5M20 31v4.5M25 31v4.5M4.5 15h4.5M4.5 20h4.5M4.5 25h4.5M31 15h4.5M31 20h4.5M31 25h4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15.2 23.6l4.6-4.6 4.6-2.6M19.8 19v8M24.4 23.8V27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="15.2" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="16.4" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/></svg><span class="wm"><b>Alejandro</b><small>Ingeniería &amp; Sistemas</small></span></a>
+    <button class="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <div class="links" id="menu">
+      <a href="../#series">Series</a>
+      <a href="../blog/">Blog</a>
+      <a href="../ruta/">Ruta</a>
+      <a href="../glosario/" aria-current="page">Glosario</a>
+      <a href="../#colaboraciones">Colaboraciones</a>
+      <a href="../#quien">Quién soy</a>
+      <a class="pill" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<div class="page-head">
+  <div class="crumbs"><a href="../">Inicio</a> / Glosario</div>
+  <span class="tag">Referencia rápida</span>
+  <h1 style="margin-top:14px">Glosario de <span class="grad">redes</span></h1>
+  <p class="lead">Consulta una definición y abre la guía relacionada para verla en contexto.</p>
+  <input class="search" id="q" type="search" placeholder="Buscar término… (ej. DHCP)" aria-label="Buscar término">
+</div>
+<section style="max-width:780px;padding-top:0">
+  <div class="jump" role="navigation" aria-label="Términos"><a href="#arp">ARP</a><a href="#cname">CNAME</a><a href="#dhcp">DHCP</a><a href="#direccion-ip">Dirección IP</a><a href="#direccion-mac">Dirección MAC</a><a href="#dns">DNS</a><a href="#encapsulacion">Encapsulación</a><a href="#mascara-de-subred">Máscara de subred</a><a href="#mx">MX</a><a href="#pdu">PDU</a><a href="#prefijo-de-red">Prefijo de red</a><a href="#puerta-de-enlace">Puerta de enlace</a><a href="#ruta-predeterminada">Ruta predeterminada</a><a href="#siguiente-salto">Siguiente salto</a><a href="#tcp">TCP</a><a href="#ttl-en-dns">TTL en DNS</a><a href="#udp">UDP</a><a href="#vlan">VLAN</a><a href="#vlsm">VLSM</a></div>
+  <dl class="glossary">
+    <div class="term" id="arp">
+      <dt>ARP</dt>
+      <dd>Protocolo que averigua la dirección MAC que corresponde a una IP dentro de la misma red local.<a href="../blog/direcciones-ip-y-subredes.html">Direcciones IP y subredes desde cero →</a></dd>
+    </div>
+    <div class="term" id="cname">
+      <dt>CNAME</dt>
+      <dd>Registro DNS que indica que un nombre es alias de otro, por ejemplo www apuntando a un servicio de hosting.<a href="../blog/como-funciona-dns.html">¿Qué pasa cuando escribes un dominio? →</a></dd>
+    </div>
+    <div class="term" id="dhcp">
+      <dt>DHCP</dt>
+      <dd>Protocolo que entrega automáticamente a un equipo su IP, máscara, puerta de enlace y servidores DNS.<a href="../blog/diagnosticar-conexion.html">Tu equipo tiene Wi-Fi, pero la web no carga →</a></dd>
+    </div>
+    <div class="term" id="direccion-ip">
+      <dt>Dirección IP</dt>
+      <dd>Identificador numérico de una interfaz en una red. Los paquetes llevan una IP de origen y una de destino.<a href="../blog/direcciones-ip-y-subredes.html">Direcciones IP y subredes desde cero →</a></dd>
+    </div>
+    <div class="term" id="direccion-mac">
+      <dt>Dirección MAC</dt>
+      <dd>Identificador de 48 bits de una tarjeta de red, usado para entregar tramas dentro de la red local (capa 2).<a href="../blog/modelo-osi-explicado.html">El modelo OSI explicado con lo que pasa al abrir una página web →</a></dd>
+    </div>
+    <div class="term" id="dns">
+      <dt>DNS</dt>
+      <dd>Sistema distribuido que traduce nombres de dominio en información como direcciones IP o servidores de correo.<a href="../blog/como-funciona-dns.html">¿Qué pasa cuando escribes un dominio? →</a></dd>
+    </div>
+    <div class="term" id="encapsulacion">
+      <dt>Encapsulación</dt>
+      <dd>Proceso por el que cada capa agrega su encabezado a los datos antes de pasarlos a la capa de abajo.<a href="../blog/modelo-osi-explicado.html">El modelo OSI explicado con lo que pasa al abrir una página web →</a></dd>
+    </div>
+    <div class="term" id="mascara-de-subred">
+      <dt>Máscara de subred</dt>
+      <dd>Forma decimal del prefijo: indica qué parte de la IP es red y qué parte es host. /24 = 255.255.255.0.<a href="../blog/direcciones-ip-y-subredes.html">Direcciones IP y subredes desde cero →</a></dd>
+    </div>
+    <div class="term" id="mx">
+      <dt>MX</dt>
+      <dd>Registro DNS que indica qué servidores reciben el correo de un dominio y en qué orden de prioridad.<a href="../blog/como-funciona-dns.html">¿Qué pasa cuando escribes un dominio? →</a></dd>
+    </div>
+    <div class="term" id="pdu">
+      <dt>PDU</dt>
+      <dd>Unidad de datos de cada capa: bits, trama, paquete, segmento o datos.<a href="../blog/modelo-osi-explicado.html">El modelo OSI explicado con lo que pasa al abrir una página web →</a></dd>
+    </div>
+    <div class="term" id="prefijo-de-red">
+      <dt>Prefijo de red</dt>
+      <dd>Bits iniciales de una dirección que identifican la red. La notación /24 indica un prefijo de 24 bits.<a href="../blog/direcciones-ip-y-subredes.html">Direcciones IP y subredes desde cero →</a></dd>
+    </div>
+    <div class="term" id="puerta-de-enlace">
+      <dt>Puerta de enlace</dt>
+      <dd>Router al que un equipo entrega el tráfico que va hacia otras redes.<a href="../blog/como-decide-un-router.html">Cómo decide un router el siguiente salto →</a></dd>
+    </div>
+    <div class="term" id="ruta-predeterminada">
+      <dt>Ruta predeterminada</dt>
+      <dd>Ruta 0.0.0.0/0, que se usa cuando ninguna ruta más específica coincide con el destino.<a href="../blog/como-decide-un-router.html">Cómo decide un router el siguiente salto →</a></dd>
+    </div>
+    <div class="term" id="siguiente-salto">
+      <dt>Siguiente salto</dt>
+      <dd>Siguiente router al que se reenvía un paquete según la ruta elegida.<a href="../blog/como-decide-un-router.html">Cómo decide un router el siguiente salto →</a></dd>
+    </div>
+    <div class="term" id="tcp">
+      <dt>TCP</dt>
+      <dd>Protocolo de transporte orientado a conexión: garantiza que los datos lleguen completos y en orden.<a href="../blog/modelo-osi-explicado.html">El modelo OSI explicado con lo que pasa al abrir una página web →</a></dd>
+    </div>
+    <div class="term" id="ttl-en-dns">
+      <dt>TTL en DNS</dt>
+      <dd>Tiempo durante el cual un resolvedor puede guardar en caché un registro antes de volver a consultarlo.<a href="../blog/como-funciona-dns.html">¿Qué pasa cuando escribes un dominio? →</a></dd>
+    </div>
+    <div class="term" id="udp">
+      <dt>UDP</dt>
+      <dd>Protocolo de transporte sin conexión: más rápido, sin garantía de entrega. Lo usan DNS, VoIP y streaming.<a href="../blog/modelo-osi-explicado.html">El modelo OSI explicado con lo que pasa al abrir una página web →</a></dd>
+    </div>
+    <div class="term" id="vlan">
+      <dt>VLAN</dt>
+      <dd>Red local virtual: divide un switch en varios dominios de difusión separados, como si fueran switches distintos.<a href="../blog/modelo-osi-explicado.html">El modelo OSI explicado con lo que pasa al abrir una página web →</a></dd>
+    </div>
+    <div class="term" id="vlsm">
+      <dt>VLSM</dt>
+      <dd>Técnica para dividir una red en subredes de distinto tamaño, cada una con la máscara que necesita.<a href="../blog/vlsm-paso-a-paso.html">VLSM paso a paso: reparte una /24 sin desperdiciar IPs →</a></dd>
+    </div>
+  </dl>
+  <p class="empty" id="empty" hidden>No hay términos con esa búsqueda.</p>
+</section>
+</main>
+<script>
+document.getElementById("q").addEventListener("input",function(e){
+  var q=e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""),n=0;
+  document.querySelectorAll(".term").forEach(function(t){var ok=t.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").indexOf(q)>-1;t.hidden=!ok;if(ok)n++});
+  document.getElementById("empty").hidden=n>0;
+});
+</script>
+
+<footer>
+  <div class="foot">
+    <div>© <span data-year>2026</span> Alejandro Ingeniería · Bucaramanga, Colombia</div>
+    <div class="cols">
+      <a href="../blog/">Blog</a>
+      <a href="../ruta/">Ruta de estudio</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="mailto:contacto@alejandroingeneria.tech">contacto@alejandroingeneria.tech</a>
+    </div>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+</body>
+</html>

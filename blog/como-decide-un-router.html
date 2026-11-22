@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cómo decide un router el siguiente salto · Alejandro Ingeniería</title>
+<meta name="description" content="Lee una tabla de rutas y descubre qué ocurre cuando varias entradas coinciden con el mismo destino.">
+<link rel="canonical" href="https://alejandroingeneria.tech/blog/como-decide-un-router.html">
+<meta name="theme-color" content="#002451">
+<meta name="author" content="Brayan Alejandro Santamaría">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Alejandro Ingeniería">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Cómo decide un router el siguiente salto · Alejandro Ingeniería">
+<meta property="og:description" content="Lee una tabla de rutas y descubre qué ocurre cuando varias entradas coinciden con el mismo destino.">
+<meta property="og:url" content="https://alejandroingeneria.tech/blog/como-decide-un-router.html">
+<meta property="og:image" content="https://alejandroingeneria.tech/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script>document.documentElement.classList.add("js")</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Cómo decide un router el siguiente salto", "description": "Lee una tabla de rutas y descubre qué ocurre cuando varias entradas coinciden con el mismo destino.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingeneria.tech/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingeneria.tech/"}, "mainEntityOfPage": "https://alejandroingeneria.tech/blog/como-decide-un-router.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<nav aria-label="Principal">
+  <div class="nav-in">
+    <a class="brand" href="../" aria-label="Alejandro Ingeniería, inicio"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="9" width="22" height="22" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15 4.5v4.5M20 4.5v4.5M25 4.5v4.5M15 31v4.5M20 31v4.5M25 31v4.5M4.5 15h4.5M4.5 20h4.5M4.5 25h4.5M31 15h4.5M31 20h4.5M31 25h4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15.2 23.6l4.6-4.6 4.6-2.6M19.8 19v8M24.4 23.8V27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="15.2" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="16.4" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/></svg><span class="wm"><b>Alejandro</b><small>Ingeniería &amp; Sistemas</small></span></a>
+    <button class="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <div class="links" id="menu">
+      <a href="../#series">Series</a>
+      <a href="../blog/" aria-current="page">Blog</a>
+      <a href="../ruta/">Ruta</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="../#colaboraciones">Colaboraciones</a>
+      <a href="../#quien">Quién soy</a>
+      <a class="pill" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<div class="page-head">
+  <div class="crumbs"><a href="../">Inicio</a> / <a href="./">Blog</a> / Enrutamiento</div>
+  <h1>Cómo decide un router el siguiente salto</h1>
+  <div class="post-meta"><span class="chip">Enrutamiento</span><span>Paso 5 de la <a href="../ruta/" style="color:inherit">ruta de estudio</a></span><span>· 5 min de lectura</span></div>
+</div>
+<article class="post">
+<p>Un router recibe un paquete y tiene que decidir, en microsegundos, por dónde mandarlo. No adivina: consulta su <strong>tabla de enrutamiento</strong> y aplica una regla muy concreta.</p>
+
+<h2>Una decisión por destino</h2>
+<p>El router mira la <strong>IP de destino</strong> del paquete y la busca en su tabla. Cada ruta dice hacia qué red aplica, por qué <strong>interfaz</strong> sale y, cuando hace falta, cuál es el <strong>siguiente salto</strong>: la IP del próximo router en el camino.</p>
+
+<h2>Gana el prefijo más específico</h2>
+<p>Imagina que un router tiene estas rutas:</p>
+<div class="tbl"><table>
+<thead><tr><th>Destino</th><th>Siguiente salto</th></tr></thead>
+<tbody>
+<tr><td><code>10.42.8.0/24</code></td><td>Router B</td></tr>
+<tr><td><code>10.42.0.0/16</code></td><td>Router A</td></tr>
+<tr><td><code>0.0.0.0/0</code></td><td>Salida predeterminada</td></tr>
+</tbody></table></div>
+<p>Llega un paquete para <code>10.42.8.20</code>. Las tres rutas coinciden, pero gana <code>10.42.8.0/24</code> porque fija <strong>más bits</strong> del destino. A esto se le llama <em>longest prefix match</em>, y es la regla que usan todos los routers.</p>
+<p>La ruta <code>0.0.0.0/0</code> es la <strong>ruta predeterminada</strong>: coincide con todo, pero como tiene el prefijo más corto, solo se usa cuando ninguna otra coincide.</p>
+
+<h2>Lee una tabla real</h2>
+<pre><code># Windows
+route print -4
+
+# Linux
+ip route
+
+# Router Cisco
+show ip route</code></pre>
+<p>Busca la ruta predeterminada y observa a qué interfaz o puerta de enlace apunta. En un router Cisco, las letras al inicio de cada línea te dicen de dónde salió la ruta: <code>C</code> conectada, <code>S</code> estática, <code>O</code> OSPF.</p>
+
+<h2>Prueba otra dirección</h2>
+<p>Con la tabla del ejemplo, ¿hacia dónde se enviaría un paquete para <code>10.42.9.20</code>?</p>
+<details><summary>Ver respuesta</summary><p><strong>Router A.</strong> No coincide con <code>10.42.8.0/24</code> (el tercer octeto es 9), pero sí con <code>10.42.0.0/16</code>, que es más específica que la ruta predeterminada.</p></details>
+
+<p class="next">Sigue leyendo: <a href="diagnosticar-conexion.html">Tu equipo tiene Wi-Fi, pero la web no carga →</a></p>
+</article>
+
+<div class="post-cta">
+  <div class="box">
+    <div><h3>¿Te sirvió? Hay un video nuevo cada día</h3><p>Versiones de un minuto de este y otros temas en YouTube, Instagram y TikTok.</p></div>
+    <a class="btn y" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div>© <span data-year>2026</span> Alejandro Ingeniería · Bucaramanga, Colombia</div>
+    <div class="cols">
+      <a href="../blog/">Blog</a>
+      <a href="../ruta/">Ruta de estudio</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="mailto:contacto@alejandroingeneria.tech">contacto@alejandroingeneria.tech</a>
+    </div>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+</body>
+</html>

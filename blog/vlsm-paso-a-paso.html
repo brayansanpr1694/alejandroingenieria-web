@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VLSM paso a paso: reparte una /24 sin desperdiciar IPs · Alejandro Ingeniería</title>
+<meta name="description" content="Un ejercicio completo de VLSM: cuatro redes de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.">
+<link rel="canonical" href="https://alejandroingeneria.tech/blog/vlsm-paso-a-paso.html">
+<meta name="theme-color" content="#002451">
+<meta name="author" content="Brayan Alejandro Santamaría">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Alejandro Ingeniería">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="VLSM paso a paso: reparte una /24 sin desperdiciar IPs · Alejandro Ingeniería">
+<meta property="og:description" content="Un ejercicio completo de VLSM: cuatro redes de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.">
+<meta property="og:url" content="https://alejandroingeneria.tech/blog/vlsm-paso-a-paso.html">
+<meta property="og:image" content="https://alejandroingeneria.tech/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script>document.documentElement.classList.add("js")</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "VLSM paso a paso: reparte una /24 sin desperdiciar IPs", "description": "Un ejercicio completo de VLSM: cuatro redes de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingeneria.tech/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingeneria.tech/"}, "mainEntityOfPage": "https://alejandroingeneria.tech/blog/vlsm-paso-a-paso.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<nav aria-label="Principal">
+  <div class="nav-in">
+    <a class="brand" href="../" aria-label="Alejandro Ingeniería, inicio"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="9" width="22" height="22" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15 4.5v4.5M20 4.5v4.5M25 4.5v4.5M15 31v4.5M20 31v4.5M25 31v4.5M4.5 15h4.5M4.5 20h4.5M4.5 25h4.5M31 15h4.5M31 20h4.5M31 25h4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15.2 23.6l4.6-4.6 4.6-2.6M19.8 19v8M24.4 23.8V27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="15.2" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="16.4" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/></svg><span class="wm"><b>Alejandro</b><small>Ingeniería &amp; Sistemas</small></span></a>
+    <button class="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <div class="links" id="menu">
+      <a href="../#series">Series</a>
+      <a href="../blog/" aria-current="page">Blog</a>
+      <a href="../ruta/">Ruta</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="../#colaboraciones">Colaboraciones</a>
+      <a href="../#quien">Quién soy</a>
+      <a class="pill" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<div class="page-head">
+  <div class="crumbs"><a href="../">Inicio</a> / <a href="./">Blog</a> / Subnetting</div>
+  <h1>VLSM paso a paso: reparte una /24 sin desperdiciar IPs</h1>
+  <div class="post-meta"><span class="chip">Subnetting</span><span>Paso 3 de la <a href="../ruta/" style="color:inherit">ruta de estudio</a></span><span>· 8 min de lectura</span></div>
+</div>
+<article class="post">
+<p>Si alguna vez dividiste una red en subredes <strong>todas del mismo tamaño</strong>, ya sabes el problema: a una LAN de 20 equipos le sobran cientos de direcciones y a un enlace entre dos routers, que solo necesita 2, le das lo mismo que a la red más grande. <strong>VLSM</strong> (<em>Variable Length Subnet Mask</em>) arregla eso: cada subred recibe una máscara a la medida de lo que necesita.</p>
+
+<p>En este tutorial vamos a resolver un ejercicio completo, de principio a fin, con la misma técnica que uso en los laboratorios de Cisco.</p>
+
+<h2>El ejercicio</h2>
+<p>Nos dan la red <code>192.168.10.0/24</code> y hay que repartirla entre:</p>
+<ul>
+  <li><strong>LAN Ventas:</strong> 100 hosts</li>
+  <li><strong>LAN Soporte:</strong> 50 hosts</li>
+  <li><strong>LAN Gerencia:</strong> 20 hosts</li>
+  <li><strong>WAN 1 y WAN 2:</strong> enlaces punto a punto entre routers, 2 hosts cada uno</li>
+</ul>
+
+<h2>Paso 1: ordena de mayor a menor</h2>
+<p>Esta es la regla de oro de VLSM: <strong>siempre asigna primero la subred más grande</strong>. Si empiezas por las pequeñas, los bloques grandes terminan sin espacio alineado y te toca empezar de nuevo.</p>
+<p>Orden: Ventas (100) → Soporte (50) → Gerencia (20) → WAN 1 (2) → WAN 2 (2).</p>
+
+<h2>Paso 2: calcula el tamaño de bloque de cada red</h2>
+<p>Cada subred necesita sus hosts <strong>más 2 direcciones</strong> que no se pueden asignar: la de red y la de broadcast. Buscamos la potencia de 2 más pequeña que alcance:</p>
+<div class="tbl"><table>
+<thead><tr><th>Red</th><th>Hosts</th><th>+2</th><th>Bloque</th><th>Prefijo</th><th>Máscara</th></tr></thead>
+<tbody>
+<tr><td>Ventas</td><td>100</td><td>102</td><td>128</td><td><code>/25</code></td><td><code>255.255.255.128</code></td></tr>
+<tr><td>Soporte</td><td>50</td><td>52</td><td>64</td><td><code>/26</code></td><td><code>255.255.255.192</code></td></tr>
+<tr><td>Gerencia</td><td>20</td><td>22</td><td>32</td><td><code>/27</code></td><td><code>255.255.255.224</code></td></tr>
+<tr><td>WAN 1</td><td>2</td><td>4</td><td>4</td><td><code>/30</code></td><td><code>255.255.255.252</code></td></tr>
+<tr><td>WAN 2</td><td>2</td><td>4</td><td>4</td><td><code>/30</code></td><td><code>255.255.255.252</code></td></tr>
+</tbody></table></div>
+<div class="note b"><strong>Truco rápido:</strong> el prefijo sale de <code>32 − n</code>, donde <code>2ⁿ</code> es el tamaño del bloque. Bloque de 128 = 2⁷ → 32 − 7 = <code>/25</code>. Bloque de 4 = 2² → <code>/30</code>.</div>
+
+<h2>Paso 3: asigna los bloques uno detrás de otro</h2>
+<p>Empezamos en <code>192.168.10.0</code> y cada red arranca justo donde terminó la anterior:</p>
+<ol>
+  <li><strong>Ventas /25</strong> ocupa 128 direcciones: de <code>.0</code> a <code>.127</code>. La siguiente libre es <code>.128</code>.</li>
+  <li><strong>Soporte /26</strong> ocupa 64: de <code>.128</code> a <code>.191</code>. Siguiente libre: <code>.192</code>.</li>
+  <li><strong>Gerencia /27</strong> ocupa 32: de <code>.192</code> a <code>.223</code>. Siguiente libre: <code>.224</code>.</li>
+  <li><strong>WAN 1 /30</strong> ocupa 4: de <code>.224</code> a <code>.227</code>.</li>
+  <li><strong>WAN 2 /30</strong> ocupa 4: de <code>.228</code> a <code>.231</code>.</li>
+</ol>
+<p>Como fuimos de mayor a menor, cada red cae siempre en una dirección que es múltiplo de su tamaño de bloque, que es justo lo que exige una subred válida.</p>
+
+<h2>Resultado final</h2>
+<div class="tbl"><table>
+<thead><tr><th>Red</th><th>Dirección de red</th><th>Primer host</th><th>Último host</th><th>Broadcast</th></tr></thead>
+<tbody>
+<tr><td>Ventas</td><td><code>192.168.10.0/25</code></td><td><code>.1</code></td><td><code>.126</code></td><td><code>.127</code></td></tr>
+<tr><td>Soporte</td><td><code>192.168.10.128/26</code></td><td><code>.129</code></td><td><code>.190</code></td><td><code>.191</code></td></tr>
+<tr><td>Gerencia</td><td><code>192.168.10.192/27</code></td><td><code>.193</code></td><td><code>.222</code></td><td><code>.223</code></td></tr>
+<tr><td>WAN 1</td><td><code>192.168.10.224/30</code></td><td><code>.225</code></td><td><code>.226</code></td><td><code>.227</code></td></tr>
+<tr><td>WAN 2</td><td><code>192.168.10.228/30</code></td><td><code>.229</code></td><td><code>.230</code></td><td><code>.231</code></td></tr>
+</tbody></table></div>
+<p>Y nos sobra el rango <code>192.168.10.232</code> – <code>192.168.10.255</code> (24 direcciones) para crecer: por ejemplo, otra LAN pequeña de hasta 6 hosts (<code>/29</code>) o más enlaces WAN.</p>
+
+<h2>¿Cuánto ahorramos?</h2>
+<p>Con subredes de tamaño fijo, para que cupiera Ventas tendrías que usar <code>/25</code> para todo, y con eso la /24 solo alcanza para <strong>dos</strong> subredes. No cabrían las cinco. Con VLSM caben todas y todavía queda espacio libre.</p>
+
+<h2>Así se ve en un router Cisco</h2>
+<p>Por ejemplo, la interfaz que da a Ventas usa el primer host como gateway, y el enlace WAN 1 usa las dos direcciones útiles de la /30:</p>
+<pre><code>R1(config)# interface g0/0
+R1(config-if)# description LAN-VENTAS
+R1(config-if)# ip address 192.168.10.1 255.255.255.128
+R1(config-if)# no shutdown
+
+R1(config)# interface s0/0/0
+R1(config-if)# description WAN1-hacia-R2
+R1(config-if)# ip address 192.168.10.225 255.255.255.252
+R1(config-if)# no shutdown</code></pre>
+<p>En R2, el otro extremo del enlace, iría <code>192.168.10.226 255.255.255.252</code>.</p>
+
+<h2>Errores comunes</h2>
+<ul>
+  <li><strong>Olvidar el +2.</strong> 62 hosts caben en una /26, pero 63 ya no: necesitas una /25.</li>
+  <li><strong>No ordenar de mayor a menor.</strong> Es la causa número uno de subredes que se solapan.</li>
+  <li><strong>Poner una red en una dirección que no es múltiplo de su bloque.</strong> Una /26 puede empezar en .0, .64, .128 o .192, nunca en .100.</li>
+  <li><strong>Usar /24 en los enlaces WAN.</strong> Un enlace punto a punto con una /30 es suficiente (o /31 en equipos que lo soporten).</li>
+</ul>
+
+<h2>Practica tú</h2>
+<p>Con la red <code>172.16.0.0/24</code>, reparte: una LAN de 60 hosts, una de 28, una de 12 y tres enlaces WAN. Pista: la primera red va en <code>172.16.0.0/26</code>. Si quieres, mándame tu respuesta por Instagram y la reviso en un video.</p>
+
+<p class="next">Sigue leyendo: <a href="como-funciona-dns.html">¿Qué pasa cuando escribes un dominio? →</a></p>
+</article>
+
+<div class="post-cta">
+  <div class="box">
+    <div><h3>¿Te sirvió? Hay un video nuevo cada día</h3><p>Versiones de un minuto de este y otros temas en YouTube, Instagram y TikTok.</p></div>
+    <a class="btn y" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div>© <span data-year>2026</span> Alejandro Ingeniería · Bucaramanga, Colombia</div>
+    <div class="cols">
+      <a href="../blog/">Blog</a>
+      <a href="../ruta/">Ruta de estudio</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="mailto:contacto@alejandroingeneria.tech">contacto@alejandroingeneria.tech</a>
+    </div>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+</body>
+</html>

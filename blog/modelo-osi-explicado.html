@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El modelo OSI explicado con lo que pasa al abrir una página web · Alejandro Ingeniería</title>
+<meta name="description" content="Las 7 capas del modelo OSI explicadas siguiendo lo que pasa cuando abres una página: qué hace cada capa, sus PDU, protocolos y equipos.">
+<link rel="canonical" href="https://alejandroingeneria.tech/blog/modelo-osi-explicado.html">
+<meta name="theme-color" content="#002451">
+<meta name="author" content="Brayan Alejandro Santamaría">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Alejandro Ingeniería">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="El modelo OSI explicado con lo que pasa al abrir una página web · Alejandro Ingeniería">
+<meta property="og:description" content="Las 7 capas del modelo OSI explicadas siguiendo lo que pasa cuando abres una página: qué hace cada capa, sus PDU, protocolos y equipos.">
+<meta property="og:url" content="https://alejandroingeneria.tech/blog/modelo-osi-explicado.html">
+<meta property="og:image" content="https://alejandroingeneria.tech/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script>document.documentElement.classList.add("js")</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "El modelo OSI explicado con lo que pasa al abrir una página web", "description": "Las 7 capas del modelo OSI explicadas siguiendo lo que pasa cuando abres una página: qué hace cada capa, sus PDU, protocolos y equipos.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingeneria.tech/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingeneria.tech/"}, "mainEntityOfPage": "https://alejandroingeneria.tech/blog/modelo-osi-explicado.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<nav aria-label="Principal">
+  <div class="nav-in">
+    <a class="brand" href="../" aria-label="Alejandro Ingeniería, inicio"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="9" width="22" height="22" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15 4.5v4.5M20 4.5v4.5M25 4.5v4.5M15 31v4.5M20 31v4.5M25 31v4.5M4.5 15h4.5M4.5 20h4.5M4.5 25h4.5M31 15h4.5M31 20h4.5M31 25h4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15.2 23.6l4.6-4.6 4.6-2.6M19.8 19v8M24.4 23.8V27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="15.2" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="16.4" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/></svg><span class="wm"><b>Alejandro</b><small>Ingeniería &amp; Sistemas</small></span></a>
+    <button class="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <div class="links" id="menu">
+      <a href="../#series">Series</a>
+      <a href="../blog/" aria-current="page">Blog</a>
+      <a href="../ruta/">Ruta</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="../#colaboraciones">Colaboraciones</a>
+      <a href="../#quien">Quién soy</a>
+      <a class="pill" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<div class="page-head">
+  <div class="crumbs"><a href="../">Inicio</a> / <a href="./">Blog</a> / Fundamentos</div>
+  <h1>El modelo OSI explicado con lo que pasa al abrir una página web</h1>
+  <div class="post-meta"><span class="chip">Fundamentos</span><span>Paso 1 de la <a href="../ruta/" style="color:inherit">ruta de estudio</a></span><span>· 9 min de lectura</span></div>
+</div>
+<article class="post">
+<p>El modelo OSI se suele enseñar como una lista para memorizar: física, enlace, red, transporte, sesión, presentación, aplicación. El problema es que así no se entiende <strong>para qué sirve</strong>. Aquí lo vamos a recorrer siguiendo algo que haces todos los días: escribir una dirección en el navegador y abrir una página web.</p>
+
+<h2>Qué es el modelo OSI</h2>
+<p>Es un modelo de referencia de la ISO que divide la comunicación entre dos equipos en <strong>7 capas</strong>. Cada capa tiene un trabajo concreto, le da un servicio a la capa de arriba y usa el de la capa de abajo. Gracias a esa separación, puedes cambiar el Wi-Fi por un cable de fibra sin que el navegador se entere.</p>
+<p>En la práctica, Internet funciona con el modelo <strong>TCP/IP</strong>, que junta algunas capas. Pero OSI sigue siendo el idioma que usamos para diagnosticar: “es un problema de capa 2” dice mucho en una sola frase.</p>
+
+<h2>Las 7 capas de un vistazo</h2>
+<div class="tbl"><table>
+<thead><tr><th>#</th><th>Capa</th><th>Qué hace</th><th>PDU</th><th>Ejemplos</th></tr></thead>
+<tbody>
+<tr><td>7</td><td>Aplicación</td><td>Interfaz con las aplicaciones de red</td><td>Datos</td><td>HTTP, DNS, SMTP, SSH</td></tr>
+<tr><td>6</td><td>Presentación</td><td>Formato, cifrado y compresión</td><td>Datos</td><td>TLS, UTF-8, JPEG</td></tr>
+<tr><td>5</td><td>Sesión</td><td>Abre, mantiene y cierra diálogos</td><td>Datos</td><td>Sesiones RPC, NetBIOS</td></tr>
+<tr><td>4</td><td>Transporte</td><td>Comunicación extremo a extremo, puertos</td><td>Segmento / datagrama</td><td>TCP, UDP</td></tr>
+<tr><td>3</td><td>Red</td><td>Direccionamiento lógico y enrutamiento</td><td>Paquete</td><td>IPv4, IPv6, ICMP · routers</td></tr>
+<tr><td>2</td><td>Enlace de datos</td><td>Entrega en la red local, direcciones MAC</td><td>Trama</td><td>Ethernet, Wi-Fi (802.11) · switches</td></tr>
+<tr><td>1</td><td>Física</td><td>Bits como señales eléctricas, luz u ondas</td><td>Bits</td><td>Cobre UTP, fibra, radio · hubs</td></tr>
+</tbody></table></div>
+<div class="note"><strong>Para recordarlas de abajo hacia arriba:</strong> “<strong>F</strong>ísica, <strong>E</strong>nlace, <strong>R</strong>ed, <strong>T</strong>ransporte, <strong>S</strong>esión, <strong>P</strong>resentación, <strong>A</strong>plicación”. Inventa tu propia frase con esas iniciales: la que se te ocurra a ti es la que no se olvida.</div>
+
+<h2>El viaje de una petición web, capa por capa</h2>
+<p>Escribes <code>alejandroingeneria.tech</code> y presionas Enter. Esto es lo que pasa en tu equipo, de arriba hacia abajo:</p>
+
+<h3>7 · Aplicación</h3>
+<p>El navegador primero pregunta por <strong>DNS</strong> cuál es la IP del dominio. Con la respuesta, arma una petición <strong>HTTP</strong>: “dame la página principal”.</p>
+
+<h3>6 · Presentación</h3>
+<p>Como la página va por HTTPS, los datos se <strong>cifran con TLS</strong>. Aquí también se define cómo se codifica el texto (UTF-8) o las imágenes.</p>
+
+<h3>5 · Sesión</h3>
+<p>Se mantiene el diálogo entre tu navegador y el servidor para que varias peticiones (el HTML, la hoja de estilos, las imágenes) pertenezcan a la misma conversación. En TCP/IP esta función la reparten la aplicación y TLS, por eso a veces cuesta “ver” esta capa.</p>
+
+<h3>4 · Transporte</h3>
+<p><strong>TCP</strong> divide los datos en <strong>segmentos</strong>, los numera y garantiza que lleguen completos y en orden. Agrega el <strong>puerto</strong> de destino: <code>443</code> para HTTPS. Antes de enviar nada, hace el famoso saludo de tres vías: SYN, SYN-ACK, ACK.</p>
+
+<h3>3 · Red</h3>
+<p><strong>IP</strong> mete cada segmento en un <strong>paquete</strong> con la IP de origen (tu equipo) y la de destino (el servidor). Los <strong>routers</strong> leen esa dirección y deciden por dónde mandarlo, salto a salto, hasta llegar.</p>
+
+<h3>2 · Enlace de datos</h3>
+<p>Para salir de tu red local, el paquete va dentro de una <strong>trama</strong> Ethernet o Wi-Fi con la <strong>MAC</strong> de tu router como destino (la averiguas con ARP). El <strong>switch</strong> usa esa MAC para entregarla por el puerto correcto. En cada salto, la trama se cambia por una nueva; el paquete IP sigue igual.</p>
+
+<h3>1 · Física</h3>
+<p>Finalmente, la trama se convierte en <strong>bits</strong>: pulsos eléctricos en el cable UTP, luz en la fibra del operador u ondas de radio en el Wi-Fi.</p>
+
+<p>En el servidor ocurre lo mismo al revés: cada capa quita su encabezado y le pasa el contenido a la de arriba, hasta que el servidor web lee tu petición HTTP y responde.</p>
+
+<h2>Encapsulación en una línea</h2>
+<pre><code>Datos → [TCP | Datos] → [IP | TCP | Datos] → [Eth | IP | TCP | Datos | FCS] → 0101100…
+         segmento        paquete              trama                         bits</code></pre>
+
+<h2>Para qué te sirve en la vida real</h2>
+<p>Cuando algo falla, el modelo OSI te da un orden para revisar, de abajo hacia arriba:</p>
+<ul>
+  <li><strong>Capa 1:</strong> ¿el cable está conectado? ¿la luz del puerto enciende?</li>
+  <li><strong>Capa 2:</strong> ¿el puerto del switch está en la VLAN correcta?</li>
+  <li><strong>Capa 3:</strong> ¿tengo IP y gateway? ¿responde un <code>ping</code> al router?</li>
+  <li><strong>Capa 4:</strong> ¿el puerto está abierto o lo bloquea un firewall?</li>
+  <li><strong>Capa 7:</strong> ¿resuelve el DNS? ¿el servicio está corriendo?</li>
+</ul>
+<p>Así dejas de probar cosas al azar y empiezas a diagnosticar como en un NOC.</p>
+
+<h2>La serie completa</h2>
+<p>Este tutorial acompaña la serie del modelo OSI del canal: un video general y uno dedicado a cada capa. Encuéntralos en <a href="https://www.youtube.com/@alejandroingenieria" target="_blank" rel="noopener">YouTube</a>, <a href="https://www.instagram.com/alejandroingenieria/" target="_blank" rel="noopener">Instagram</a> y <a href="https://www.tiktok.com/@alejandroingenieria" target="_blank" rel="noopener">TikTok</a>.</p>
+
+<p class="next">Sigue leyendo: <a href="direcciones-ip-y-subredes.html">Direcciones IP y subredes desde cero →</a></p>
+</article>
+
+<div class="post-cta">
+  <div class="box">
+    <div><h3>¿Te sirvió? Hay un video nuevo cada día</h3><p>Versiones de un minuto de este y otros temas en YouTube, Instagram y TikTok.</p></div>
+    <a class="btn y" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div>© <span data-year>2026</span> Alejandro Ingeniería · Bucaramanga, Colombia</div>
+    <div class="cols">
+      <a href="../blog/">Blog</a>
+      <a href="../ruta/">Ruta de estudio</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="mailto:contacto@alejandroingeneria.tech">contacto@alejandroingeneria.tech</a>
+    </div>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tu equipo tiene Wi-Fi, pero la web no carga · Alejandro Ingeniería</title>
+<meta name="description" content="Un recorrido práctico para separar problemas de configuración, resolución DNS y conexión al sitio.">
+<link rel="canonical" href="https://alejandroingeneria.tech/blog/diagnosticar-conexion.html">
+<meta name="theme-color" content="#002451">
+<meta name="author" content="Brayan Alejandro Santamaría">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Alejandro Ingeniería">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Tu equipo tiene Wi-Fi, pero la web no carga · Alejandro Ingeniería">
+<meta property="og:description" content="Un recorrido práctico para separar problemas de configuración, resolución DNS y conexión al sitio.">
+<meta property="og:url" content="https://alejandroingeneria.tech/blog/diagnosticar-conexion.html">
+<meta property="og:image" content="https://alejandroingeneria.tech/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script>document.documentElement.classList.add("js")</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Tu equipo tiene Wi-Fi, pero la web no carga", "description": "Un recorrido práctico para separar problemas de configuración, resolución DNS y conexión al sitio.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingeneria.tech/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingeneria.tech/"}, "mainEntityOfPage": "https://alejandroingeneria.tech/blog/diagnosticar-conexion.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<nav aria-label="Principal">
+  <div class="nav-in">
+    <a class="brand" href="../" aria-label="Alejandro Ingeniería, inicio"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="9" width="22" height="22" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15 4.5v4.5M20 4.5v4.5M25 4.5v4.5M15 31v4.5M20 31v4.5M25 31v4.5M4.5 15h4.5M4.5 20h4.5M4.5 25h4.5M31 15h4.5M31 20h4.5M31 25h4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15.2 23.6l4.6-4.6 4.6-2.6M19.8 19v8M24.4 23.8V27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="15.2" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="16.4" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/></svg><span class="wm"><b>Alejandro</b><small>Ingeniería &amp; Sistemas</small></span></a>
+    <button class="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <div class="links" id="menu">
+      <a href="../#series">Series</a>
+      <a href="../blog/" aria-current="page">Blog</a>
+      <a href="../ruta/">Ruta</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="../#colaboraciones">Colaboraciones</a>
+      <a href="../#quien">Quién soy</a>
+      <a class="pill" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<div class="page-head">
+  <div class="crumbs"><a href="../">Inicio</a> / <a href="./">Blog</a> / Diagnóstico</div>
+  <h1>Tu equipo tiene Wi-Fi, pero la web no carga</h1>
+  <div class="post-meta"><span class="chip">Diagnóstico</span><span>Paso 6 de la <a href="../ruta/" style="color:inherit">ruta de estudio</a></span><span>· 6 min de lectura</span></div>
+</div>
+<article class="post">
+<p>El ícono del Wi-Fi dice “conectado”, pero la página no carga. En lugar de reiniciar todo al azar, puedes seguir un orden que separa el problema en partes: <strong>tu configuración, el DNS o la conexión al sitio</strong>. Es el mismo razonamiento por capas del <a href="modelo-osi-explicado.html">modelo OSI</a>.</p>
+
+<h2>1. Empieza por el alcance</h2>
+<p>Prueba otro sitio y otro dispositivo conectado a la misma red.</p>
+<ul>
+  <li>Si falla <strong>un solo sitio</strong>, anota su dirección y el error exacto del navegador.</li>
+  <li>Si fallan <strong>varios dispositivos</strong>, la causa probablemente está en algo que comparten: el router o la conexión del proveedor.</li>
+</ul>
+
+<h2>2. Revisa tu dirección y tu puerta de enlace</h2>
+<pre><code># Windows
+ipconfig
+
+# Linux / macOS
+ip addr      # o ifconfig
+ip route</code></pre>
+<p>Busca la interfaz Wi-Fi y anota tu IPv4 y tu puerta de enlace. Una IP de la forma <code>169.254.x.x</code> es una pista clara: el equipo <strong>no obtuvo configuración por DHCP</strong> y se asignó una dirección local. Prueba <code>ping</code> a la puerta de enlace: si no responde, el problema está en tu red local.</p>
+
+<h2>3. Separa DNS de la conexión HTTPS</h2>
+<p>Primero comprueba si puedes resolver el nombre. Luego, si el equipo puede abrir una conexión TCP al puerto 443:</p>
+<pre><code>nslookup example.com
+Test-NetConnection example.com -Port 443    # PowerShell
+nc -vz example.com 443                       # Linux / macOS</code></pre>
+<ul>
+  <li><strong>Si DNS falla:</strong> prueba con otro resolvedor, por ejemplo <code>nslookup example.com 1.1.1.1</code>.</li>
+  <li><strong>Si DNS responde pero TCP falla:</strong> mira la ruta, un firewall o el servicio de destino.</li>
+  <li><strong>Si TCP funciona:</strong> todavía pueden fallar TLS (certificado), un proxy o la aplicación web.</li>
+</ul>
+
+<h2>4. Qué anotar</h2>
+<p>Registra qué dispositivos fallan, qué nombres resuelven y en qué prueba aparece el <strong>primer error</strong>. Con eso, si tienes que llamar a soporte o abrir un ticket en un NOC, ya llevas el problema acotado.</p>
+<div class="note b"><strong>Resumen:</strong> alcance → IP y gateway → DNS → TCP 443 → TLS/aplicación. De abajo hacia arriba, como las capas.</div>
+
+<p class="next">Sigue leyendo: <a href="modelo-osi-explicado.html">El modelo OSI explicado con lo que pasa al abrir una página web →</a></p>
+</article>
+
+<div class="post-cta">
+  <div class="box">
+    <div><h3>¿Te sirvió? Hay un video nuevo cada día</h3><p>Versiones de un minuto de este y otros temas en YouTube, Instagram y TikTok.</p></div>
+    <a class="btn y" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div>© <span data-year>2026</span> Alejandro Ingeniería · Bucaramanga, Colombia</div>
+    <div class="cols">
+      <a href="../blog/">Blog</a>
+      <a href="../ruta/">Ruta de estudio</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="mailto:contacto@alejandroingeneria.tech">contacto@alejandroingeneria.tech</a>
+    </div>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+</body>
+</html>

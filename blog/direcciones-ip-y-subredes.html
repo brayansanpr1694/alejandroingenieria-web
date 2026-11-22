@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direcciones IP y subredes desde cero · Alejandro Ingeniería</title>
+<meta name="description" content="Aprende a leer un prefijo como /24 y a reconocer cuándo dos direcciones están en la misma subred.">
+<link rel="canonical" href="https://alejandroingeneria.tech/blog/direcciones-ip-y-subredes.html">
+<meta name="theme-color" content="#002451">
+<meta name="author" content="Brayan Alejandro Santamaría">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Alejandro Ingeniería">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Direcciones IP y subredes desde cero · Alejandro Ingeniería">
+<meta property="og:description" content="Aprende a leer un prefijo como /24 y a reconocer cuándo dos direcciones están en la misma subred.">
+<meta property="og:url" content="https://alejandroingeneria.tech/blog/direcciones-ip-y-subredes.html">
+<meta property="og:image" content="https://alejandroingeneria.tech/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script>document.documentElement.classList.add("js")</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Direcciones IP y subredes desde cero", "description": "Aprende a leer un prefijo como /24 y a reconocer cuándo dos direcciones están en la misma subred.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingeneria.tech/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingeneria.tech/"}, "mainEntityOfPage": "https://alejandroingeneria.tech/blog/direcciones-ip-y-subredes.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<nav aria-label="Principal">
+  <div class="nav-in">
+    <a class="brand" href="../" aria-label="Alejandro Ingeniería, inicio"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="9" width="22" height="22" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15 4.5v4.5M20 4.5v4.5M25 4.5v4.5M15 31v4.5M20 31v4.5M25 31v4.5M4.5 15h4.5M4.5 20h4.5M4.5 25h4.5M31 15h4.5M31 20h4.5M31 25h4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15.2 23.6l4.6-4.6 4.6-2.6M19.8 19v8M24.4 23.8V27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="15.2" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="16.4" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/></svg><span class="wm"><b>Alejandro</b><small>Ingeniería &amp; Sistemas</small></span></a>
+    <button class="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <div class="links" id="menu">
+      <a href="../#series">Series</a>
+      <a href="../blog/" aria-current="page">Blog</a>
+      <a href="../ruta/">Ruta</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="../#colaboraciones">Colaboraciones</a>
+      <a href="../#quien">Quién soy</a>
+      <a class="pill" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<div class="page-head">
+  <div class="crumbs"><a href="../">Inicio</a> / <a href="./">Blog</a> / Fundamentos</div>
+  <h1>Direcciones IP y subredes desde cero</h1>
+  <div class="post-meta"><span class="chip">Fundamentos</span><span>Paso 2 de la <a href="../ruta/" style="color:inherit">ruta de estudio</a></span><span>· 5 min de lectura</span></div>
+</div>
+<article class="post">
+<p>Antes de hacer subnetting o VLSM hay que tener clara una idea: <strong>qué significa el /24</strong> que acompaña a una dirección IP y cómo te dice si dos equipos están en la misma red.</p>
+
+<h2>Qué identifica una IP</h2>
+<p>Una dirección IP identifica una <strong>interfaz</strong> dentro de una red, no un equipo completo: un portátil puede tener una IP en Wi-Fi y otra en Ethernet. En IPv4 se escribe como cuatro números de 0 a 255 separados por puntos, por ejemplo <code>192.168.1.25</code>. Por debajo son 32 bits.</p>
+
+<h2>Qué dice el prefijo</h2>
+<p>En <code>192.168.1.25/24</code>, el <code>/24</code> indica que los <strong>primeros 24 de los 32 bits identifican la red</strong> y los 8 restantes identifican al equipo dentro de ella. Es lo mismo que la máscara <code>255.255.255.0</code>.</p>
+<div class="tbl"><table>
+<thead><tr><th>Prefijo</th><th>Máscara</th><th>Direcciones</th><th>Hosts útiles</th></tr></thead>
+<tbody>
+<tr><td><code>/24</code></td><td><code>255.255.255.0</code></td><td>256</td><td>254</td></tr>
+<tr><td><code>/25</code></td><td><code>255.255.255.128</code></td><td>128</td><td>126</td></tr>
+<tr><td><code>/26</code></td><td><code>255.255.255.192</code></td><td>64</td><td>62</td></tr>
+<tr><td><code>/30</code></td><td><code>255.255.255.252</code></td><td>4</td><td>2</td></tr>
+</tbody></table></div>
+<p>Así, <code>192.168.1.60/24</code> está en la misma red que <code>192.168.1.25/24</code> (la red <code>192.168.1.0/24</code>), pero <code>192.168.2.60/24</code> está en otra. Ojo: esta comparación <strong>cambia si cambia el prefijo</strong>. Con <code>/16</code>, las tres estarían en la misma red <code>192.168.0.0/16</code>.</p>
+
+<h2>Cuándo entra el router</h2>
+<p>Si el destino está en tu misma red, tu equipo le envía el tráfico directamente por esa interfaz (averigua su MAC con ARP). Si está en otra red, se lo entrega a la <strong>puerta de enlace predeterminada</strong>, que es el router que sabe cómo salir.</p>
+
+<h2>Practica con dos direcciones</h2>
+<p>¿Están <code>10.0.5.34/24</code> y <code>10.0.6.34/24</code> en la misma subred?</p>
+<details><summary>Ver respuesta</summary><p><strong>No.</strong> Con /24, la red la definen los tres primeros octetos: la primera está en <code>10.0.5.0/24</code> y la segunda en <code>10.0.6.0/24</code>. Para hablar entre ellas necesitan pasar por un router.</p></details>
+
+<p>Cuando tengas esto claro, el siguiente paso es repartir una red en subredes de distinto tamaño: <a href="vlsm-paso-a-paso.html">VLSM paso a paso</a>.</p>
+
+<p class="next">Sigue leyendo: <a href="vlsm-paso-a-paso.html">VLSM paso a paso: reparte una /24 sin desperdiciar IPs →</a></p>
+</article>
+
+<div class="post-cta">
+  <div class="box">
+    <div><h3>¿Te sirvió? Hay un video nuevo cada día</h3><p>Versiones de un minuto de este y otros temas en YouTube, Instagram y TikTok.</p></div>
+    <a class="btn y" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div>© <span data-year>2026</span> Alejandro Ingeniería · Bucaramanga, Colombia</div>
+    <div class="cols">
+      <a href="../blog/">Blog</a>
+      <a href="../ruta/">Ruta de estudio</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="mailto:contacto@alejandroingeneria.tech">contacto@alejandroingeneria.tech</a>
+    </div>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+</body>
+</html>

@@ -7,8 +7,10 @@ HTML + CSS + JS puro, sin dependencias, publicado con GitHub Pages.
 
 ```
 index.html                 Portada (series, blog, redes, colaboraciones, quién soy)
-blog/index.html            Listado del blog
+blog/index.html            Listado del blog (con filtro por tema)
 blog/<tutorial>.html       Un archivo por tutorial
+ruta/index.html            Ruta de estudio (orden de lectura + práctica)
+glosario/index.html        Glosario con buscador
 404.html                   Página de error
 assets/style.css           Estilos compartidos
 assets/main.js             Menú móvil, animaciones y diagrama de ojo
@@ -21,7 +23,7 @@ robots.txt, sitemap.xml    SEO
 
 1. Copia `blog/vlsm-paso-a-paso.html` con un nombre nuevo, por ejemplo `blog/vlans-packet-tracer.html`.
 2. Cambia `<title>`, `description`, `canonical`, `og:*`, el bloque JSON-LD, el título y el contenido de `<article>`.
-3. Agrega la tarjeta en `blog/index.html` (y en la sección Blog de `index.html` si quieres destacarlo).
+3. Agrega la tarjeta en `blog/index.html` (con su `data-tema` para el filtro) y, si va en la ruta, un paso en `ruta/index.html`.
 4. Agrega la URL en `sitemap.xml`.
 
 ## Conectar el dominio (GitHub Pages)
@@ -57,6 +59,6 @@ dig www.alejandroingeneria.tech +short
 
 ## Correos del dominio
 
-La web usa `contacto@alejandroingeneria.tech` y `colaboraciones@alejandroingeneria.tech`.
-Para que funcionen, configura un reenvío de correo (p. ej. el reenvío del registrador, ImprovMX o Cloudflare Email Routing) hacia tu Gmail.
-Los registros **MX/TXT** del correo conviven sin problema con los A/CNAME de GitHub Pages.
+Correo en Zoho Mail (plan gratis): buzón `contacto@alejandroingeneria.tech` con el alias `colaboraciones@alejandroingeneria.tech`.
+Registros en el DNS: MX `mx.zoho.com` (10), `mx2.zoho.com` (20), `mx3.zoho.com` (50), SPF `v=spf1 include:zohomail.com ~all` y DKIM en `zmail._domainkey`.
+Conviven sin problema con los A/CNAME de GitHub Pages.

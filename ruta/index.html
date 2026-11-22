@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ruta de estudio de redes · Alejandro Ingeniería</title>
+<meta name="description" content="Seis lecturas en orden para entender cómo se conectan dos equipos y qué revisar cuando esa conexión falla, con una práctica en cada etapa.">
+<link rel="canonical" href="https://alejandroingeneria.tech/ruta/">
+<meta name="theme-color" content="#002451">
+<meta name="author" content="Brayan Alejandro Santamaría">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Alejandro Ingeniería">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Ruta de estudio de redes · Alejandro Ingeniería">
+<meta property="og:description" content="Seis lecturas en orden para entender cómo se conectan dos equipos y qué revisar cuando esa conexión falla, con una práctica en cada etapa.">
+<meta property="og:url" content="https://alejandroingeneria.tech/ruta/">
+<meta property="og:image" content="https://alejandroingeneria.tech/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<nav aria-label="Principal">
+  <div class="nav-in">
+    <a class="brand" href="../" aria-label="Alejandro Ingeniería, inicio"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="9" width="22" height="22" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15 4.5v4.5M20 4.5v4.5M25 4.5v4.5M15 31v4.5M20 31v4.5M25 31v4.5M4.5 15h4.5M4.5 20h4.5M4.5 25h4.5M31 15h4.5M31 20h4.5M31 25h4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15.2 23.6l4.6-4.6 4.6-2.6M19.8 19v8M24.4 23.8V27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="15.2" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="16.4" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/><circle cx="24.4" cy="23.6" r="1.9" fill="#002451" stroke="currentColor" stroke-width="1.6"/></svg><span class="wm"><b>Alejandro</b><small>Ingeniería &amp; Sistemas</small></span></a>
+    <button class="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <div class="links" id="menu">
+      <a href="../#series">Series</a>
+      <a href="../blog/">Blog</a>
+      <a href="../ruta/" aria-current="page">Ruta</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="../#colaboraciones">Colaboraciones</a>
+      <a href="../#quien">Quién soy</a>
+      <a class="pill" href="https://www.youtube.com/@alejandroingenieria?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<div class="page-head">
+  <div class="crumbs"><a href="../">Inicio</a> / Ruta de estudio</div>
+  <span class="tag">Fundamentos de redes</span>
+  <h1 style="margin-top:14px">Ruta de <span class="grad">estudio</span></h1>
+  <p class="lead">Seis lecturas en orden para entender cómo se conectan dos equipos y qué revisar cuando esa conexión falla. Cada etapa trae una práctica para hacer en tu propio equipo.</p>
+</div>
+<section style="max-width:780px;padding-top:10px">
+  <ol class="steps">
+    <li class="step reveal">
+      <span class="num">01</span>
+      <div>
+        <span class="chip">Fundamentos</span>
+        <h3><a href="../blog/modelo-osi-explicado.html">El modelo OSI explicado con lo que pasa al abrir una página web</a></h3>
+        <p>Las 7 capas del modelo OSI explicadas siguiendo lo que pasa cuando abres una página: qué hace cada capa, sus PDU, protocolos y equipos.</p>
+        <p class="prac"><b>Práctica ·</b> Ubica en qué capa trabaja cada equipo de tu red de casa.</p>
+      </div>
+    </li>
+    <li class="step reveal">
+      <span class="num">02</span>
+      <div>
+        <span class="chip">Fundamentos</span>
+        <h3><a href="../blog/direcciones-ip-y-subredes.html">Direcciones IP y subredes desde cero</a></h3>
+        <p>Aprende a leer un prefijo como /24 y a reconocer cuándo dos direcciones están en la misma subred.</p>
+        <p class="prac"><b>Práctica ·</b> Compara dos direcciones IPv4 con el mismo prefijo.</p>
+      </div>
+    </li>
+    <li class="step reveal">
+      <span class="num">03</span>
+      <div>
+        <span class="chip">Subnetting</span>
+        <h3><a href="../blog/vlsm-paso-a-paso.html">VLSM paso a paso: reparte una /24 sin desperdiciar IPs</a></h3>
+        <p>Un ejercicio completo de VLSM: cuatro redes de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.</p>
+        <p class="prac"><b>Práctica ·</b> Reparte 172.16.0.0/24 entre tres LAN y tres enlaces WAN.</p>
+      </div>
+    </li>
+    <li class="step reveal">
+      <span class="num">04</span>
+      <div>
+        <span class="chip">DNS</span>
+        <h3><a href="../blog/como-funciona-dns.html">¿Qué pasa cuando escribes un dominio?</a></h3>
+        <p>Acompaña una consulta DNS desde tu equipo hasta el servidor que conoce la respuesta: resolvedor, raíz, autoritativo y registros.</p>
+        <p class="prac"><b>Práctica ·</b> Consulta los registros A, AAAA y MX de un dominio.</p>
+      </div>
+    </li>
+    <li class="step reveal">
+      <span class="num">05</span>
+      <div>
+        <span class="chip">Enrutamiento</span>
+        <h3><a href="../blog/como-decide-un-router.html">Cómo decide un router el siguiente salto</a></h3>
+        <p>Lee una tabla de rutas y descubre qué ocurre cuando varias entradas coinciden con el mismo destino.</p>
+        <p class="prac"><b>Práctica ·</b> Lee una tabla de rutas y elige el siguiente salto.</p>
+      </div>
+    </li>
+    <li class="step reveal">
+      <span class="num">06</span>
+      <div>
+        <span class="chip">Diagnóstico</span>
+        <h3><a href="../blog/diagnosticar-conexion.html">Tu equipo tiene Wi-Fi, pero la web no carga</a></h3>
+        <p>Un recorrido práctico para separar problemas de configuración, resolución DNS y conexión al sitio.</p>
+        <p class="prac"><b>Práctica ·</b> Usa la guía para revisar la conexión desde tu equipo.</p>
+      </div>
+    </li>
+  </ol>
+</section>
+</main>
+
+<footer>
+  <div class="foot">
+    <div>© <span data-year>2026</span> Alejandro Ingeniería · Bucaramanga, Colombia</div>
+    <div class="cols">
+      <a href="../blog/">Blog</a>
+      <a href="../ruta/">Ruta de estudio</a>
+      <a href="../glosario/">Glosario</a>
+      <a href="mailto:contacto@alejandroingeneria.tech">contacto@alejandroingeneria.tech</a>
+    </div>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+</body>
+</html>
