@@ -23,7 +23,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/style.css">
 <script>document.documentElement.classList.add("js")</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "El modelo OSI explicado con lo que pasa al abrir una página web", "description": "Las 7 capas del modelo OSI explicadas siguiendo lo que pasa cuando abres una página: qué hace cada capa, sus PDU, protocolos y equipos.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingenieria.me/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingenieria.me/"}, "mainEntityOfPage": "https://alejandroingenieria.me/blog/modelo-osi-explicado.html"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "El modelo OSI explicado con lo que pasa al abrir una página web", "description": "Las 7 capas del modelo OSI explicadas siguiendo lo que pasa cuando abres una página: qué hace cada capa, sus PDU, protocolos y equipos.", "dateModified": "2026-11-27", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingenieria.me/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingenieria.me/"}, "mainEntityOfPage": "https://alejandroingenieria.me/blog/modelo-osi-explicado.html"}</script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -50,10 +50,11 @@
   <div class="post-meta"><span class="chip">Fundamentos</span><span>Paso 1 de la <a href="../ruta/" style="color:inherit">ruta de estudio</a></span><span>· 9 min de lectura</span></div>
 </div>
 <article class="post">
+<p class="revision">Revisión técnica: <time datetime="2026-11-27">27 de noviembre de 2026</time>.</p>
 <p>El modelo OSI se suele enseñar como una lista para memorizar: física, enlace, red, transporte, sesión, presentación, aplicación. El problema es que así no se entiende <strong>para qué sirve</strong>. Aquí lo vamos a recorrer siguiendo algo que haces todos los días: escribir una dirección en el navegador y abrir una página web.</p>
 
 <h2>Qué es el modelo OSI</h2>
-<p>Es un modelo de referencia de la ISO que divide la comunicación entre dos equipos en <strong>7 capas</strong>. Cada capa tiene un trabajo concreto, le da un servicio a la capa de arriba y usa el de la capa de abajo. Gracias a esa separación, puedes cambiar el Wi-Fi por un cable de fibra sin que el navegador se entere.</p>
+<p>Es un modelo de referencia de la ISO que organiza funciones de comunicación en <strong>7 capas</strong>. Cada capa ofrece servicios a la superior y se apoya en la inferior. Esta separación permite que una aplicación use distintas tecnologías de acceso sin tener que implementarlas por sí misma.</p>
 <p>En la práctica, Internet funciona con el modelo <strong>TCP/IP</strong>, que junta algunas capas. Pero OSI sigue siendo el idioma que usamos para diagnosticar: “es un problema de capa 2” dice mucho en una sola frase.</p>
 
 <h2>Las 7 capas de un vistazo</h2>
@@ -71,30 +72,31 @@
 <div class="note"><strong>Para recordarlas de abajo hacia arriba:</strong> “<strong>F</strong>ísica, <strong>E</strong>nlace, <strong>R</strong>ed, <strong>T</strong>ransporte, <strong>S</strong>esión, <strong>P</strong>resentación, <strong>A</strong>plicación”. Inventa tu propia frase con esas iniciales: la que se te ocurra a ti es la que no se olvida.</div>
 
 <h2>El viaje de una petición web, capa por capa</h2>
-<p>Escribes <code>alejandroingenieria.me</code> y presionas Enter. Esto es lo que pasa en tu equipo, de arriba hacia abajo:</p>
+<p>Usaremos una conexión nueva de HTTPS sobre TCP e IPv4 como ejemplo. HTTP/3 usa QUIC sobre UDP y tiene un recorrido distinto. La siguiente explicación relaciona funciones con las capas OSI; no es una cronología literal ni implica que cada protocolo de Internet pertenezca exclusivamente a una capa. En las capas superiores, esa correspondencia es aproximada.</p>
 
 <h3>7 · Aplicación</h3>
-<p>El navegador primero pregunta por <strong>DNS</strong> cuál es la IP del dominio. Con la respuesta, arma una petición <strong>HTTP</strong>: “dame la página principal”.</p>
+<p>El navegador obtiene una dirección del dominio mediante <strong>DNS</strong>, posiblemente desde una caché. HTTP define la petición del recurso. En una conexión HTTPS nueva sobre TCP, la conexión TCP y el establecimiento de TLS ocurren antes de enviar esa petición HTTP cifrada.</p>
 
 <h3>6 · Presentación</h3>
-<p>Como la página va por HTTPS, los datos se <strong>cifran con TLS</strong>. Aquí también se define cómo se codifica el texto (UTF-8) o las imágenes.</p>
+<p>Las funciones de representación incluyen codificación, compresión y cifrado. UTF-8 es una codificación de texto; TLS protege la comunicación HTTPS. Se suelen relacionar con presentación para enseñar OSI, pero TLS es un protocolo de Internet y no una implementación independiente de la capa 6.</p>
 
 <h3>5 · Sesión</h3>
-<p>Se mantiene el diálogo entre tu navegador y el servidor para que varias peticiones (el HTML, la hoja de estilos, las imágenes) pertenezcan a la misma conversación. En TCP/IP esta función la reparten la aplicación y TLS, por eso a veces cuesta “ver” esta capa.</p>
+<p>OSI agrupa aquí funciones de gestión del diálogo. En la web, la reutilización de conexiones y el estado de sesión se resuelven con varios mecanismos. Una sesión de usuario, por ejemplo con cookies, no equivale a una conexión TCP ni demuestra la existencia de una capa 5 separada.</p>
 
 <h3>4 · Transporte</h3>
-<p><strong>TCP</strong> divide los datos en <strong>segmentos</strong>, los numera y garantiza que lleguen completos y en orden. Agrega el <strong>puerto</strong> de destino: <code>443</code> para HTTPS. Antes de enviar nada, hace el famoso saludo de tres vías: SYN, SYN-ACK, ACK.</p>
+<p><strong>TCP</strong> ofrece a la aplicación un flujo de bytes fiable y ordenado mediante secuenciación y retransmisiones. Si la conexión no puede continuar, puede fallar: no garantiza que toda transferencia termine. En este ejemplo usa el puerto de destino <code>443</code> y normalmente establece la conexión mediante SYN, SYN-ACK y ACK antes de transferir los datos de la aplicación.</p>
 
 <h3>3 · Red</h3>
 <p><strong>IP</strong> mete cada segmento en un <strong>paquete</strong> con la IP de origen (tu equipo) y la de destino (el servidor). Los <strong>routers</strong> leen esa dirección y deciden por dónde mandarlo, salto a salto, hasta llegar.</p>
 
 <h3>2 · Enlace de datos</h3>
-<p>Para salir de tu red local, el paquete va dentro de una <strong>trama</strong> Ethernet o Wi-Fi con la <strong>MAC</strong> de tu router como destino (la averiguas con ARP). El <strong>switch</strong> usa esa MAC para entregarla por el puerto correcto. En cada salto, la trama se cambia por una nueva; el paquete IP sigue igual.</p>
+<p>En una LAN Ethernet, el paquete se encapsula en una <strong>trama</strong> dirigida a la MAC del siguiente salto, obtenida con ARP en IPv4. Si el destino está fuera de la LAN y la ruta pasa por el gateway, se usa la MAC del gateway; si está en el mismo enlace, la del destino. En Wi-Fi el formato de trama puede incluir varias direcciones MAC.</p>
+<p>Un switch reenvía las tramas según su tabla MAC y la VLAN. Al atravesar un router, se crea la encapsulación del enlace de salida. El paquete IPv4 tampoco permanece idéntico: se reduce el TTL y se actualiza la suma de comprobación del encabezado. NAT, si está configurado, puede modificar las direcciones.</p>
 
 <h3>1 · Física</h3>
 <p>Finalmente, la trama se convierte en <strong>bits</strong>: pulsos eléctricos en el cable UTP, luz en la fibra del operador u ondas de radio en el Wi-Fi.</p>
 
-<p>En el servidor ocurre lo mismo al revés: cada capa quita su encabezado y le pasa el contenido a la de arriba, hasta que el servidor web lee tu petición HTTP y responde.</p>
+<p>En el destino se procesan los encabezados de enlace, IP y transporte, y los datos llegan a TLS y HTTP. A esto se le llama desencapsulación. No todas las capas OSI agregan necesariamente un encabezado separado; la trama Ethernet también incluye un campo final de comprobación.</p>
 
 <h2>Encapsulación en una línea</h2>
 <pre><code>Datos → [TCP | Datos] → [IP | TCP | Datos] → [Eth | IP | TCP | Datos | FCS] → 0101100…
@@ -113,6 +115,12 @@
 
 <h2>La serie completa</h2>
 <p>Este tutorial acompaña la serie del modelo OSI del canal: un video general y uno dedicado a cada capa. Encuéntralos en <a href="https://www.youtube.com/@alejandroingenieria" target="_blank" rel="noopener">YouTube</a>, <a href="https://www.instagram.com/alejandroingenieria/" target="_blank" rel="noopener">Instagram</a> y <a href="https://www.tiktok.com/@alejandroingenieria" target="_blank" rel="noopener">TikTok</a>.</p>
+
+<h2>Referencias para profundizar</h2>
+<ul>
+  <li><a href="https://www.rfc-editor.org/rfc/rfc9293.html" target="_blank" rel="noopener">RFC 9293: TCP</a></li>
+  <li><a href="https://www.rfc-editor.org/rfc/rfc9114.html" target="_blank" rel="noopener">RFC 9114: HTTP/3</a></li>
+</ul>
 
 <p class="next">Sigue leyendo: <a href="direcciones-ip-y-subredes.html">Direcciones IP y subredes desde cero →</a></p>
 </article>

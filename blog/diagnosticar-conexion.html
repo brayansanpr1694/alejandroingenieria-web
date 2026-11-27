@@ -23,7 +23,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/style.css">
 <script>document.documentElement.classList.add("js")</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Tu equipo tiene Wi-Fi, pero la web no carga", "description": "Un recorrido práctico para separar problemas de configuración, resolución DNS y conexión al sitio.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingenieria.me/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingenieria.me/"}, "mainEntityOfPage": "https://alejandroingenieria.me/blog/diagnosticar-conexion.html"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Tu equipo tiene Wi-Fi, pero la web no carga", "description": "Un recorrido práctico para separar problemas de configuración, resolución DNS y conexión al sitio.", "dateModified": "2026-11-27", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingenieria.me/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingenieria.me/"}, "mainEntityOfPage": "https://alejandroingenieria.me/blog/diagnosticar-conexion.html"}</script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -50,6 +50,7 @@
   <div class="post-meta"><span class="chip">Diagnóstico</span><span>Paso 6 de la <a href="../ruta/" style="color:inherit">ruta de estudio</a></span><span>· 6 min de lectura</span></div>
 </div>
 <article class="post">
+<p class="revision">Revisión técnica: <time datetime="2026-11-27">27 de noviembre de 2026</time>.</p>
 <p>El ícono del Wi-Fi dice “conectado”, pero la página no carga. En lugar de reiniciar todo al azar, puedes seguir un orden que separa el problema en partes: <strong>tu configuración, el DNS o la conexión al sitio</strong>. Es el mismo razonamiento por capas del <a href="modelo-osi-explicado.html">modelo OSI</a>.</p>
 
 <h2>1. Empieza por el alcance</h2>
@@ -60,28 +61,54 @@
 </ul>
 
 <h2>2. Revisa tu dirección y tu puerta de enlace</h2>
-<pre><code># Windows
-ipconfig
+<pre><code># Windows (PowerShell o CMD)
+ipconfig /all
 
-# Linux / macOS
-ip addr      # o ifconfig
-ip route</code></pre>
-<p>Busca la interfaz Wi-Fi y anota tu IPv4 y tu puerta de enlace. Una IP de la forma <code>169.254.x.x</code> es una pista clara: el equipo <strong>no obtuvo configuración por DHCP</strong> y se asignó una dirección local. Prueba <code>ping</code> a la puerta de enlace: si no responde, el problema está en tu red local.</p>
+# Linux
+ip addr
+ip route
+
+# macOS
+ifconfig
+route -n get default</code></pre>
+<p>Busca la interfaz Wi-Fi y anota sus direcciones, máscara o prefijo, puerta de enlace y servidores DNS. Si esperabas una IPv4 asignada por DHCP y solo ves una dirección <code>169.254.x.x</code>, investiga la configuración automática: puede tratarse de una dirección IPv4 de enlace local. Es una pista, no una prueba concluyente de la causa ni del estado de IPv6.</p>
+<p>Prueba <code>ping</code> a la puerta de enlace que aparece en tu configuración. Una respuesta aporta evidencia de conectividad IP con ella. Si no responde, revisa asociación Wi-Fi, configuración y políticas: el router puede filtrar ICMP aunque permita otro tráfico. Un ping fallido por sí solo no localiza la avería.</p>
 
 <h2>3. Separa DNS de la conexión HTTPS</h2>
 <p>Primero comprueba si puedes resolver el nombre. Luego, si el equipo puede abrir una conexión TCP al puerto 443:</p>
-<pre><code>nslookup example.com
-Test-NetConnection example.com -Port 443    # PowerShell
-nc -vz example.com 443                       # Linux / macOS</code></pre>
+<pre><code># Consulta DNS (si nslookup está instalado)
+nslookup example.com
+
+# Windows PowerShell: conexión TCP
+Test-NetConnection example.com -Port 443
+
+# Linux / macOS: conexión TCP, si nc está instalado
+nc -vz example.com 443</code></pre>
 <ul>
-  <li><strong>Si DNS falla:</strong> prueba con otro resolvedor, por ejemplo <code>nslookup example.com 1.1.1.1</code>.</li>
-  <li><strong>Si DNS responde pero TCP falla:</strong> mira la ruta, un firewall o el servicio de destino.</li>
-  <li><strong>Si TCP funciona:</strong> todavía pueden fallar TLS (certificado), un proxy o la aplicación web.</li>
+  <li><strong>Si DNS falla:</strong> anota el error y, en una red donde esté permitido, compara con <code>nslookup example.com 1.1.1.1</code>. Una diferencia es una pista; las VPN y redes corporativas pueden usar DNS interno o bloquear consultas externas.</li>
+  <li><strong>Si DNS responde pero TCP falla:</strong> revisa qué IP devolvió DNS y qué dirección probó la herramienta. Considera rutas, políticas y disponibilidad del servicio; una sola prueba no distingue entre estas causas.</li>
+  <li><strong>Si TCP funciona:</strong> en PowerShell observa <code>TcpTestSucceeded</code>. Ese resultado confirma la conexión TCP al destino probado, pero todavía pueden fallar TLS, un proxy o la aplicación web.</li>
 </ul>
 
-<h2>4. Qué anotar</h2>
-<p>Registra qué dispositivos fallan, qué nombres resuelven y en qué prueba aparece el <strong>primer error</strong>. Con eso, si tienes que llamar a soporte o abrir un ticket en un NOC, ya llevas el problema acotado.</p>
+<div class="note"><strong>Límite de la prueba:</strong> comprobar TCP 443 no verifica HTTP/3, que utiliza QUIC sobre UDP, ni confirma que una página HTTPS cargue correctamente.</div>
+<h2>4. Comprueba TLS y la respuesta HTTP</h2>
+<p>Si tienes curl, prueba una petición completa sin omitir la validación del certificado:</p>
+<pre><code># Windows con curl.exe disponible
+curl.exe -v --connect-timeout 10 --max-time 20 https://example.com/ -o NUL
+
+# Linux / macOS con curl disponible
+curl -v --connect-timeout 10 --max-time 20 https://example.com/ -o /dev/null</code></pre>
+<p>Observa el error de conexión, el intercambio TLS y el estado HTTP. Un 403 o un 500 demuestra que hubo una respuesta HTTP, aunque el acceso o la aplicación tengan un problema. No añadas <code>-k</code> para dar por resuelto un error de certificado. El navegador puede usar otro proxy, resolvedor o protocolo, así que compara ambos resultados.</p>
+
+<h2>5. Qué anotar</h2>
+<p>Registra fecha y hora, dispositivos afectados, URL, error del navegador, DNS consultado, IP resuelta y resultado de cada prueba. Anota también si usas VPN o proxy. Comparte solo lo necesario para soporte: elimina cookies, tokens y datos personales de las salidas.</p>
 <div class="note b"><strong>Resumen:</strong> alcance → IP y gateway → DNS → TCP 443 → TLS/aplicación. De abajo hacia arriba, como las capas.</div>
+
+<h2>Referencias para profundizar</h2>
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/powershell/module/nettcpip/test-netconnection" target="_blank" rel="noopener">Microsoft: Test-NetConnection</a></li>
+  <li><a href="https://www.rfc-editor.org/rfc/rfc3927.html" target="_blank" rel="noopener">RFC 3927: IPv4 de enlace local</a></li>
+</ul>
 
 <p class="next">Sigue leyendo: <a href="modelo-osi-explicado.html">El modelo OSI explicado con lo que pasa al abrir una página web →</a></p>
 </article>
