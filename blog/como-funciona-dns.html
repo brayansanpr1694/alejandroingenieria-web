@@ -23,7 +23,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/style.css">
 <script>document.documentElement.classList.add("js")</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "¿Qué pasa cuando escribes un dominio?", "description": "Acompaña una consulta DNS desde tu equipo hasta el servidor que conoce la respuesta: resolvedor, raíz, autoritativo y registros.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingenieria.me/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingenieria.me/"}, "mainEntityOfPage": "https://alejandroingenieria.me/blog/como-funciona-dns.html"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "¿Qué pasa cuando escribes un dominio?", "description": "Acompaña una consulta DNS desde tu equipo hasta el servidor que conoce la respuesta: resolvedor, raíz, autoritativo y registros.", "dateModified": "2026-11-27", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingenieria.me/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingenieria.me/"}, "mainEntityOfPage": "https://alejandroingenieria.me/blog/como-funciona-dns.html"}</script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -50,7 +50,8 @@
   <div class="post-meta"><span class="chip">DNS</span><span>Paso 4 de la <a href="../ruta/" style="color:inherit">ruta de estudio</a></span><span>· 4 min de lectura</span></div>
 </div>
 <article class="post">
-<p>Escribes <code>alejandroingenieria.me</code>, presionas Enter y en menos de un segundo aparece la página. Pero tu equipo no sabe conectarse a un nombre: necesita una <strong>dirección IP</strong>. El encargado de traducir uno en otro es el <strong>DNS</strong> (<em>Domain Name System</em>).</p>
+<p class="revision">Revisión técnica: <time datetime="2026-11-27">27 de noviembre de 2026</time>.</p>
+<p>Escribes <code>alejandroingenieria.me</code> y presionas Enter. Para conectarse al servidor, el navegador necesita una <strong>dirección IP</strong> asociada a ese nombre. El <strong>DNS</strong> (<em>Domain Name System</em>) permite consultar esa información y otros tipos de registros.</p>
 
 <h2>Del nombre a la dirección</h2>
 <p>Lo primero que hace tu equipo es mirar si ya tiene la respuesta guardada en <strong>caché</strong> (la del navegador o la del sistema operativo). Si no la tiene, le pregunta a un <strong>resolvedor DNS</strong>: normalmente el de tu router, el de tu operador o uno público como <code>8.8.8.8</code> o <code>1.1.1.1</code>. El resolvedor puede responder con lo que tenga en su propia caché o salir a buscarlo.</p>
@@ -58,11 +59,11 @@
 <h2>Quién participa en la búsqueda</h2>
 <p>Si el resolvedor tiene que empezar de cero, la consulta baja por la jerarquía de DNS:</p>
 <ol>
-  <li>Le pregunta a un <strong>servidor raíz</strong> quién atiende <code>.tech</code>.</li>
-  <li>El servidor de <code>.tech</code> le dice cuáles son los <strong>servidores autoritativos</strong> del dominio.</li>
+  <li>Le pregunta a un <strong>servidor raíz</strong> quién atiende <code>.me</code>.</li>
+  <li>El servidor de <code>.me</code> le dice cuáles son los <strong>servidores autoritativos</strong> del dominio.</li>
   <li>El servidor autoritativo entrega la respuesta para el registro que se pidió.</li>
 </ol>
-<p>El resolvedor guarda esa respuesta en caché y te la devuelve. Tu navegador ya puede conectarse.</p>
+<p>Este es un recorrido simplificado: el resolvedor puede tener parte de la información en caché y omitir pasos. También puede seguir un alias CNAME antes de obtener una dirección. Devuelve la respuesta al cliente y puede guardarla en caché según su TTL. Resolver el nombre es un paso previo; no demuestra que el servidor web esté disponible.</p>
 
 <h2>Los registros que más vas a ver</h2>
 <div class="tbl"><table>
@@ -74,7 +75,8 @@
 <tr><td><code>MX</code></td><td>Servidores que reciben el correo del dominio</td><td><code>mx.zoho.com</code></td></tr>
 <tr><td><code>TXT</code></td><td>Texto libre: verificaciones, SPF, DKIM</td><td><code>v=spf1 include:…</code></td></tr>
 </tbody></table></div>
-<p>Además, cada respuesta trae un <strong>TTL</strong>: cuántos segundos puede guardarse en caché antes de volver a preguntar. Por eso, cuando cambias un registro, a veces tarda en “verse”.</p>
+<p>Los registros de recursos tienen un <strong>TTL</strong>, expresado en segundos, que limita cuánto tiempo pueden conservarse en caché. Una respuesta puede incluir registros con distintos TTL. Tras un cambio, algunos clientes pueden seguir recibiendo el valor anterior mientras sus cachés sigan vigentes.</p>
+<p>Las direcciones y el servidor de correo de la tabla son ejemplos ilustrativos; no describen necesariamente la configuración actual de este dominio.</p>
 
 <h2>Compruébalo en tu equipo</h2>
 <pre><code>nslookup -type=A alejandroingenieria.me
@@ -82,7 +84,13 @@ nslookup -type=AAAA alejandroingenieria.me
 nslookup -type=MX alejandroingenieria.me</code></pre>
 <p>Fíjate en qué servidor respondió y compara las direcciones: un mismo nombre puede tener varias. Si un tipo de registro no aparece, lee el mensaje antes de asumir que el dominio no existe; puede que simplemente no tenga ese registro.</p>
 
-<div class="note"><strong>Para llevarte:</strong> DNS solo resuelve el nombre. Después, el navegador se conecta a la IP obtenida (por TCP al puerto 443 si es HTTPS) para pedir la página.</div>
+<div class="note"><strong>Para llevarte:</strong> DNS permite consultar datos asociados a nombres. Después de resolver una dirección, el navegador establece la conexión: HTTPS suele usar TCP 443 con HTTP/1.1 o HTTP/2; HTTP/3 usa QUIC sobre UDP, normalmente en el puerto 443.</div>
+
+<h2>Referencias para profundizar</h2>
+<ul>
+  <li><a href="https://www.rfc-editor.org/rfc/rfc1034.html" target="_blank" rel="noopener">RFC 1034: conceptos de DNS</a></li>
+  <li><a href="https://www.rfc-editor.org/rfc/rfc9114.html" target="_blank" rel="noopener">RFC 9114: HTTP/3</a></li>
+</ul>
 
 <p class="next">Sigue leyendo: <a href="como-decide-un-router.html">Cómo decide un router el siguiente salto →</a></p>
 </article>

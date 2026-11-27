@@ -23,7 +23,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/style.css">
 <script>document.documentElement.classList.add("js")</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Cómo decide un router el siguiente salto", "description": "Lee una tabla de rutas y descubre qué ocurre cuando varias entradas coinciden con el mismo destino.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingenieria.me/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingenieria.me/"}, "mainEntityOfPage": "https://alejandroingenieria.me/blog/como-decide-un-router.html"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Cómo decide un router el siguiente salto", "description": "Lee una tabla de rutas y descubre qué ocurre cuando varias entradas coinciden con el mismo destino.", "dateModified": "2026-11-27", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingenieria.me/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingenieria.me/"}, "mainEntityOfPage": "https://alejandroingenieria.me/blog/como-decide-un-router.html"}</script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -50,7 +50,9 @@
   <div class="post-meta"><span class="chip">Enrutamiento</span><span>Paso 5 de la <a href="../ruta/" style="color:inherit">ruta de estudio</a></span><span>· 5 min de lectura</span></div>
 </div>
 <article class="post">
-<p>Un router recibe un paquete y tiene que decidir, en microsegundos, por dónde mandarlo. No adivina: consulta su <strong>tabla de enrutamiento</strong> y aplica una regla muy concreta.</p>
+<p class="revision">Revisión técnica: <time datetime="2026-11-27">27 de noviembre de 2026</time>.</p>
+<p>Un router recibe un paquete y decide por dónde reenviarlo. Para el enrutamiento IP habitual basado en destino, utiliza información de sus rutas y busca la coincidencia más específica.</p>
+<div class="note"><strong>Alcance:</strong> este ejemplo supone enrutamiento unicast por destino, sin políticas que cambien la selección. La tabla de enrutamiento (RIB) alimenta la tabla de reenvío (FIB), que se utiliza para reenviar paquetes.</div>
 
 <h2>Una decisión por destino</h2>
 <p>El router mira la <strong>IP de destino</strong> del paquete y la busca en su tabla. Cada ruta dice hacia qué red aplica, por qué <strong>interfaz</strong> sale y, cuando hace falta, cuál es el <strong>siguiente salto</strong>: la IP del próximo router en el camino.</p>
@@ -64,8 +66,12 @@
 <tr><td><code>10.42.0.0/16</code></td><td>Router A</td></tr>
 <tr><td><code>0.0.0.0/0</code></td><td>Salida predeterminada</td></tr>
 </tbody></table></div>
-<p>Llega un paquete para <code>10.42.8.20</code>. Las tres rutas coinciden, pero gana <code>10.42.8.0/24</code> porque fija <strong>más bits</strong> del destino. A esto se le llama <em>longest prefix match</em>, y es la regla que usan todos los routers.</p>
+<p>Llega un paquete para <code>10.42.8.20</code>. Las tres rutas coinciden, pero gana <code>10.42.8.0/24</code> porque fija <strong>más bits</strong> del destino. A esto se le llama <em>longest prefix match</em>: la coincidencia de prefijo más largo entre las rutas instaladas.</p>
 <p>La ruta <code>0.0.0.0/0</code> es la <strong>ruta predeterminada</strong>: coincide con todo, pero como tiene el prefijo más corto, solo se usa cuando ninguna otra coincide.</p>
+
+<h2>No confundas selección de rutas con reenvío</h2>
+<p>La distancia administrativa y las métricas ayudan a decidir qué rutas se instalan para un mismo prefijo. Al reenviar un paquete, una /24 instalada tiene prioridad sobre una /16 coincidente por ser más específica; no se comparan sus distancias administrativas para reemplazar esa regla. Puede haber varios siguientes saltos de igual coste para un mismo prefijo.</p>
+<p>Si no existe una ruta coincidente, ni siquiera una predeterminada, el router descarta el paquete; según el caso puede generar un mensaje ICMP de destino inalcanzable.</p>
 
 <h2>Lee una tabla real</h2>
 <pre><code># Windows
@@ -81,6 +87,11 @@ show ip route</code></pre>
 <h2>Prueba otra dirección</h2>
 <p>Con la tabla del ejemplo, ¿hacia dónde se enviaría un paquete para <code>10.42.9.20</code>?</p>
 <details><summary>Ver respuesta</summary><p><strong>Router A.</strong> No coincide con <code>10.42.8.0/24</code> (el tercer octeto es 9), pero sí con <code>10.42.0.0/16</code>, que es más específica que la ruta predeterminada.</p></details>
+
+<h2>Referencias para profundizar</h2>
+<ul>
+  <li><a href="https://www.cisco.com/c/en/us/support/docs/ip/enhanced-interior-gateway-routing-protocol-eigrp/8651-21.html" target="_blank" rel="noopener">Cisco: selección de rutas y reenvío</a></li>
+</ul>
 
 <p class="next">Sigue leyendo: <a href="diagnosticar-conexion.html">Tu equipo tiene Wi-Fi, pero la web no carga →</a></p>
 </article>

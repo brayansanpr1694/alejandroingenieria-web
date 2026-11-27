@@ -49,8 +49,8 @@
   <p class="lead">Guías para entender cómo se conectan los equipos, cómo viajan los datos y qué revisar cuando se corta una conexión. ¿No sabes por dónde empezar? Sigue la <a href="../ruta/" style="color:var(--gold)">ruta de estudio</a>.</p>
 </div>
 <section style="padding-top:6px">
-  <div class="filters" role="toolbar" aria-label="Filtrar por tema"><button class="filter on" data-t="*">Todos</button><button class="filter" data-t="Fundamentos">Fundamentos</button><button class="filter" data-t="Subnetting">Subnetting</button><button class="filter" data-t="DNS">DNS</button><button class="filter" data-t="Enrutamiento">Enrutamiento</button><button class="filter" data-t="Diagnóstico">Diagnóstico</button></div>
-  <p class="count"><span id="n">6</span> artículos</p>
+  <div class="filters" role="toolbar" aria-label="Filtrar por tema"><button class="filter on" aria-pressed="true" data-t="*">Todos</button><button class="filter" aria-pressed="false" data-t="Fundamentos">Fundamentos</button><button class="filter" aria-pressed="false" data-t="Subnetting">Subnetting</button><button class="filter" aria-pressed="false" data-t="DNS">DNS</button><button class="filter" aria-pressed="false" data-t="Enrutamiento">Enrutamiento</button><button class="filter" aria-pressed="false" data-t="Diagnóstico">Diagnóstico</button></div>
+  <p class="count" role="status" aria-live="polite"><span id="n">6</span> <span id="count-label">artículos</span></p>
   <div class="grid" id="posts">
     <a class="card reveal" href="modelo-osi-explicado.html" data-tema="Fundamentos">
       <div class="n">7 CAPAS</div>
@@ -67,7 +67,7 @@
     <a class="card reveal" href="vlsm-paso-a-paso.html" data-tema="Subnetting">
       <div class="n">/25 · /26 · /30</div>
       <h3>VLSM paso a paso: reparte una /24 sin desperdiciar IPs</h3>
-      <p>Un ejercicio completo de VLSM: cuatro redes de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.</p>
+      <p>Un ejercicio completo de VLSM: tres LAN de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.</p>
       <div class="meta"><span class="chip">Subnetting</span><span>8 min</span></div>
     </a>
     <a class="card reveal" href="como-funciona-dns.html" data-tema="DNS">
@@ -95,9 +95,10 @@
 </main>
 <script>
 document.querySelectorAll(".filter").forEach(function(b){b.addEventListener("click",function(){
-  var t=b.dataset.t,n=0;document.querySelectorAll(".filter").forEach(function(x){x.classList.toggle("on",x===b)});
+  var t=b.dataset.t,n=0;document.querySelectorAll(".filter").forEach(function(x){x.classList.toggle("on",x===b);x.setAttribute("aria-pressed",x===b?"true":"false")});
   document.querySelectorAll("#posts .card").forEach(function(c){var ok=t==="*"||c.dataset.tema===t;c.style.display=ok?"":"none";if(ok)n++});
   document.getElementById("n").textContent=n;
+  document.getElementById("count-label").textContent=n===1?"artículo":"artículos";
 })});
 </script>
 

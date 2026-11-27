@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VLSM paso a paso: reparte una /24 sin desperdiciar IPs · Alejandro Ingeniería</title>
-<meta name="description" content="Un ejercicio completo de VLSM: cuatro redes de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.">
+<meta name="description" content="Un ejercicio completo de VLSM: tres LAN de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.">
 <link rel="canonical" href="https://alejandroingenieria.me/blog/vlsm-paso-a-paso.html">
 <meta name="theme-color" content="#002451">
 <meta name="author" content="Brayan Alejandro Santamaría">
@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Alejandro Ingeniería">
 <meta property="og:locale" content="es_CO">
 <meta property="og:title" content="VLSM paso a paso: reparte una /24 sin desperdiciar IPs · Alejandro Ingeniería">
-<meta property="og:description" content="Un ejercicio completo de VLSM: cuatro redes de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.">
+<meta property="og:description" content="Un ejercicio completo de VLSM: tres LAN de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.">
 <meta property="og:url" content="https://alejandroingenieria.me/blog/vlsm-paso-a-paso.html">
 <meta property="og:image" content="https://alejandroingenieria.me/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -23,7 +23,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/style.css">
 <script>document.documentElement.classList.add("js")</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "VLSM paso a paso: reparte una /24 sin desperdiciar IPs", "description": "Un ejercicio completo de VLSM: cuatro redes de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingenieria.me/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingenieria.me/"}, "mainEntityOfPage": "https://alejandroingenieria.me/blog/vlsm-paso-a-paso.html"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "VLSM paso a paso: reparte una /24 sin desperdiciar IPs", "description": "Un ejercicio completo de VLSM: tres LAN de distinto tamaño y dos enlaces WAN dentro de 192.168.10.0/24, resuelto paso a paso.", "dateModified": "2026-11-27", "datePublished": "2026-11-22", "inLanguage": "es", "image": "https://alejandroingenieria.me/assets/og.png", "author": {"@type": "Person", "name": "Brayan Alejandro Santamaría", "url": "https://alejandroingenieria.me/"}, "mainEntityOfPage": "https://alejandroingenieria.me/blog/vlsm-paso-a-paso.html"}</script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -50,6 +50,7 @@
   <div class="post-meta"><span class="chip">Subnetting</span><span>Paso 3 de la <a href="../ruta/" style="color:inherit">ruta de estudio</a></span><span>· 8 min de lectura</span></div>
 </div>
 <article class="post">
+<p class="revision">Revisión técnica: <time datetime="2026-11-27">27 de noviembre de 2026</time>.</p>
 <p>Si alguna vez dividiste una red en subredes <strong>todas del mismo tamaño</strong>, ya sabes el problema: a una LAN de 20 equipos le sobran cientos de direcciones y a un enlace entre dos routers, que solo necesita 2, le das lo mismo que a la red más grande. <strong>VLSM</strong> (<em>Variable Length Subnet Mask</em>) arregla eso: cada subred recibe una máscara a la medida de lo que necesita.</p>
 
 <p>En este tutorial vamos a resolver un ejercicio completo, de principio a fin, con la misma técnica que uso en los laboratorios de Cisco.</p>
@@ -64,11 +65,12 @@
 </ul>
 
 <h2>Paso 1: ordena de mayor a menor</h2>
-<p>Esta es la regla de oro de VLSM: <strong>siempre asigna primero la subred más grande</strong>. Si empiezas por las pequeñas, los bloques grandes terminan sin espacio alineado y te toca empezar de nuevo.</p>
+<p>Una estrategia práctica es <strong>asignar primero la subred más grande</strong> y continuar con las pequeñas. Facilita mantener los bloques alineados y reduce la fragmentación. No es una condición obligatoria de VLSM: lo indispensable es que cada subred esté alineada con su prefijo, no se solape con otra y quepa dentro de la red original.</p>
 <p>Orden: Ventas (100) → Soporte (50) → Gerencia (20) → WAN 1 (2) → WAN 2 (2).</p>
 
 <h2>Paso 2: calcula el tamaño de bloque de cada red</h2>
-<p>Cada subred necesita sus hosts <strong>más 2 direcciones</strong> que no se pueden asignar: la de red y la de broadcast. Buscamos la potencia de 2 más pequeña que alcance:</p>
+<p>En las subredes IPv4 convencionales de este ejercicio reservamos <strong>dos direcciones</strong>: red y broadcast. Buscamos el menor bloque que cumpla <code>2ⁿ − 2 ≥ hosts necesarios</code>. Cuenta también la interfaz del router y otros dispositivos que necesiten IP: si los 100 hosts fueran 100 computadores más un gateway, se necesitarían 101 direcciones útiles y el bloque seguiría siendo /25.</p>
+<div class="note"><strong>Alcance:</strong> usaremos /30 para los enlaces WAN. La regla de restar dos no se aplica a los enlaces punto a punto /31 definidos por RFC 3021 ni a una ruta de host /32.</div>
 <div class="tbl"><table>
 <thead><tr><th>Red</th><th>Hosts</th><th>+2</th><th>Bloque</th><th>Prefijo</th><th>Máscara</th></tr></thead>
 <tbody>
@@ -89,7 +91,7 @@
   <li><strong>WAN 1 /30</strong> ocupa 4: de <code>.224</code> a <code>.227</code>.</li>
   <li><strong>WAN 2 /30</strong> ocupa 4: de <code>.228</code> a <code>.231</code>.</li>
 </ol>
-<p>Como fuimos de mayor a menor, cada red cae siempre en una dirección que es múltiplo de su tamaño de bloque, que es justo lo que exige una subred válida.</p>
+<p>En esta /24, cada dirección de red comienza en un múltiplo del tamaño de su bloque dentro del último octeto. El criterio general es que los bits de host de la dirección de red sean cero. Aquí los bloques están alineados y no se solapan.</p>
 
 <h2>Resultado final</h2>
 <div class="tbl"><table>
@@ -103,11 +105,19 @@
 </tbody></table></div>
 <p>Y nos sobra el rango <code>192.168.10.232</code> – <code>192.168.10.255</code> (24 direcciones) para crecer: por ejemplo, otra LAN pequeña de hasta 6 hosts (<code>/29</code>) o más enlaces WAN.</p>
 
+<h2>Comprueba el resultado</h2>
+<ul>
+  <li>Hay cinco subredes: tres LAN y dos enlaces WAN.</li>
+  <li>Los bloques consumen <code>128 + 64 + 32 + 4 + 4 = 232</code> direcciones de las 256 disponibles.</li>
+  <li>Quedan 24 direcciones libres. Ese rango no forma una única subred CIDR de 24 direcciones: puede representarse como <code>192.168.10.232/29</code> y <code>192.168.10.240/28</code>.</li>
+  <li>Cada bloque satisface su demanda y está contenido en <code>192.168.10.0/24</code>.</li>
+</ul>
+
 <h2>¿Cuánto ahorramos?</h2>
 <p>Con subredes de tamaño fijo, para que cupiera Ventas tendrías que usar <code>/25</code> para todo, y con eso la /24 solo alcanza para <strong>dos</strong> subredes. No cabrían las cinco. Con VLSM caben todas y todavía queda espacio libre.</p>
 
 <h2>Así se ve en un router Cisco</h2>
-<p>Por ejemplo, la interfaz que da a Ventas usa el primer host como gateway, y el enlace WAN 1 usa las dos direcciones útiles de la /30:</p>
+<p>Por ejemplo, la interfaz que da a Ventas usa el primer host como gateway, y el enlace WAN 1 usa las dos direcciones útiles de la /30. Los nombres de interfaz dependen del router o del simulador; compruébalos con <code>show ip interface brief</code>. Este fragmento configura direcciones, pero no completa el enrutamiento entre todas las LAN.</p>
 <pre><code>R1(config)# interface g0/0
 R1(config-if)# description LAN-VENTAS
 R1(config-if)# ip address 192.168.10.1 255.255.255.128
@@ -121,14 +131,33 @@ R1(config-if)# no shutdown</code></pre>
 
 <h2>Errores comunes</h2>
 <ul>
-  <li><strong>Olvidar el +2.</strong> 62 hosts caben en una /26, pero 63 ya no: necesitas una /25.</li>
-  <li><strong>No ordenar de mayor a menor.</strong> Es la causa número uno de subredes que se solapan.</li>
+  <li><strong>Olvidar las direcciones reservadas en una LAN IPv4 convencional.</strong> 62 interfaces caben en una /26, pero 63 requieren una /25. Incluye el gateway en la demanda.</li>
+  <li><strong>No comprobar los rangos.</strong> Ordenar de mayor a menor ayuda, pero siempre verifica alineación, capacidad y ausencia de solapamientos.</li>
   <li><strong>Poner una red en una dirección que no es múltiplo de su bloque.</strong> Una /26 puede empezar en .0, .64, .128 o .192, nunca en .100.</li>
   <li><strong>Usar /24 en los enlaces WAN.</strong> Un enlace punto a punto con una /30 es suficiente (o /31 en equipos que lo soporten).</li>
 </ul>
 
 <h2>Practica tú</h2>
-<p>Con la red <code>172.16.0.0/24</code>, reparte: una LAN de 60 hosts, una de 28, una de 12 y tres enlaces WAN. Pista: la primera red va en <code>172.16.0.0/26</code>. Si quieres, mándame tu respuesta por Instagram y la reviso en un video.</p>
+<p>Con la red <code>172.16.0.0/24</code>, reparte una LAN de 60 direcciones útiles, una de 28, una de 12 y tres enlaces WAN de dos interfaces cada uno. Las demandas ya incluyen el gateway. Usa /30 en los enlaces. Pista: la primera red va en <code>172.16.0.0/26</code>.</p>
+<details><summary>Ver una solución y comprobar los rangos</summary>
+<div class="tbl"><table>
+<thead><tr><th>Red</th><th>Subred</th><th>Hosts útiles</th><th>Broadcast</th></tr></thead>
+<tbody>
+<tr><td>LAN 60</td><td><code>172.16.0.0/26</code></td><td><code>172.16.0.1–172.16.0.62</code></td><td><code>172.16.0.63</code></td></tr>
+<tr><td>LAN 28</td><td><code>172.16.0.64/27</code></td><td><code>172.16.0.65–172.16.0.94</code></td><td><code>172.16.0.95</code></td></tr>
+<tr><td>LAN 12</td><td><code>172.16.0.96/28</code></td><td><code>172.16.0.97–172.16.0.110</code></td><td><code>172.16.0.111</code></td></tr>
+<tr><td>WAN 1</td><td><code>172.16.0.112/30</code></td><td><code>172.16.0.113–172.16.0.114</code></td><td><code>172.16.0.115</code></td></tr>
+<tr><td>WAN 2</td><td><code>172.16.0.116/30</code></td><td><code>172.16.0.117–172.16.0.118</code></td><td><code>172.16.0.119</code></td></tr>
+<tr><td>WAN 3</td><td><code>172.16.0.120/30</code></td><td><code>172.16.0.121–172.16.0.122</code></td><td><code>172.16.0.123</code></td></tr>
+</tbody></table></div>
+<p>Se usan 124 direcciones y quedan 132, desde <code>172.16.0.124</code> hasta <code>172.16.0.255</code>. Son varias subredes posibles, no un único bloque CIDR de 132 direcciones.</p>
+</details>
+<p>Puedes compartir tu solución o tus dudas en <a href="https://www.instagram.com/alejandroingenieria/" target="_blank" rel="noopener">Instagram</a>.</p>
+
+<h2>Referencias para profundizar</h2>
+<ul>
+  <li><a href="https://www.rfc-editor.org/rfc/rfc3021.html" target="_blank" rel="noopener">RFC 3021: prefijos /31 en enlaces punto a punto</a></li>
+</ul>
 
 <p class="next">Sigue leyendo: <a href="como-funciona-dns.html">¿Qué pasa cuando escribes un dominio? →</a></p>
 </article>
