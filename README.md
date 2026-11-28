@@ -1,35 +1,31 @@
 # Alejandro Ingeniería
 
-Sitio educativo para aprender redes con tutoriales, una ruta de estudio y un glosario. Está hecho con HTML, CSS y JavaScript, sin dependencias de compilación.
+Recursos educativos en español sobre redes y telecomunicaciones. El sitio reúne artículos, ejercicios y una ruta de estudio para comprender cómo se comunican los equipos y cómo diagnosticar problemas de conectividad.
 
-- [Abrir sitio](https://alejandroingenieria.me/)
-- [Ver el tutorial de VLSM](blog/vlsm-paso-a-paso.html)
-- [Explorar la ruta de estudio](ruta/index.html)
-- [Consultar el glosario](glosario/index.html)
+**[Visitar el sitio](https://alejandroingenieria.me/)** · [Canal de YouTube](https://www.youtube.com/@alejandroingenieria)
 
-## Qué puedes probar
+## Contenidos
 
-1. En el blog, filtra los tutoriales por tema.
-2. En la ruta de estudio, sigue el orden de lectura y las actividades de práctica.
-3. En el glosario, busca un término como VLSM y revisa los resultados.
+- **[Artículos y ejercicios](blog/):** modelo OSI, direccionamiento IP, subredes, VLSM, DNS, enrutamiento y diagnóstico de conexión.
+- **[Ruta de estudio](ruta/):** una secuencia de lectura y actividades para avanzar por los fundamentos de redes.
+- **[Glosario](glosario/):** conceptos y protocolos con enlaces a las explicaciones relacionadas.
+- **[Comunidad](links/):** canales y perfiles de Alejandro Ingeniería.
 
-## Ejecutar en local
+## Proyecto
 
-```bash
-git clone https://github.com/brayansanpr1694/alejandroingenieria-web.git
-cd alejandroingenieria-web
-python -m http.server 8000
-```
+Sitio estático desarrollado con HTML, CSS y JavaScript, publicado mediante GitHub Pages. Las páginas se sirven directamente, sin proceso de compilación ni dependencias de JavaScript externas. Las tipografías se cargan desde Google Fonts.
 
-Abre `http://localhost:8000`. Cada tutorial es una página HTML. Los estilos y el comportamiento compartido viven en `assets/style.css` y `assets/main.js`.
+El código de este repositorio corresponde al contenido público del sitio. No incluye un backend, cuentas de usuario ni una base de datos.
 
-## Publicar un tutorial
+| Ruta | Contenido |
+| --- | --- |
+| `index.html` | Página principal |
+| `blog/` | Artículos y ejercicios resueltos |
+| `ruta/` | Ruta de aprendizaje |
+| `glosario/` | Diccionario de términos de redes |
+| `links/` | Enlaces de la comunidad |
+| `assets/` | Estilos, scripts e imágenes compartidos |
 
-1. Copia `blog/vlsm-paso-a-paso.html` con un nombre nuevo, por ejemplo `blog/vlans-packet-tracer.html`.
-2. Cambia `<title>`, `description`, `canonical`, `og:*`, el bloque JSON-LD, el título y el contenido de `<article>`.
-3. Agrega la tarjeta en `blog/index.html` (con su `data-tema` para el filtro) y, si va en la ruta, un paso en `ruta/index.html`.
-4. Agrega la URL en `sitemap.xml`.
+## Autor
 
-## Despliegue
-
-El repositorio está preparado para GitHub Pages. El dominio configurado en [`CNAME`](CNAME) es `alejandroingenieria.me`.
+**Brayan Alejandro Santamaría** · [Portafolio](https://brayansantamaria.dev/) · [GitHub](https://github.com/brayansanpr1694)
